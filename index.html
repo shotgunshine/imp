@@ -1,3 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="A match predictor for Hattrick">
+	<title>IMP: Match Predictor</title>
+	<script src="imp/binomial.js" type="text/javascript"></script>
+	<script src="imp/form.js" type="text/javascript"></script>
+	<script src="imp/predictor.js" type="text/javascript"></script>
+	<script src="imp/ratings.js" type="text/javascript"></script>
+	<link href="res/bootstrap.min.css" rel="stylesheet">
+	<link href="res/style.css" rel="stylesheet">
+	<link href="res/favicon.svg" rel="icon" type="image/svg+xml">
+</head>
+<body>
+<header class="navbar navbar-light border-bottom">
+	<nav class="container">
+		<a href="#" class="navbar-brand"><img src="res/favicon.svg" width="32" class="me-2 align-top">IMP</a>
+	</nav>
+</header>
+<main class="container">
 	<div class="row">
 		<div class="col-12 col-md-6 mb-3">
 			<h3 class="mt-3">Home team</h3>
@@ -139,18 +161,10 @@
 					<input type="number" class="form-control text-center" id="away_tl">
 				</div>
 			</div>
-			<div class="mt-3 d-flex">
+			<div class="mt-3 d-flex justify-content-end">
 				<label for="load_away" class="btn btn-outline my-0">Load</label>
 				<input type="file" accept=".imp" class="d-none" id="load_away" onchange="IMP.form.loadRatings(this, false)">
 				<button type="button" class="btn btn-outline ms-2" onclick="IMP.form.saveRatings(false)">Save</button>
-				<div class="input-group ms-2">
-					<input type="text" class="form-control" id="match_id" placeholder="Match ID">
-					<button
-						class="btn btn-outline rounded-end"
-						type="button" onclick="IMP.form.importMatchRatings()"
-						>Import</button>
-					<div class="invalid-feedback" style="position: absolute; top: 33px;">Sign in required</div>
-				</div>
 			</div>
 		</div>
 	</div>
@@ -197,3 +211,16 @@
 			});
 		});
 	</script>
+</main>
+<script type="text/javascript">
+	function switchTheme(theme) {
+		document.querySelector('html').setAttribute('data-bs-theme', theme);
+	}
+	const colorMode = window.matchMedia('(prefers-color-scheme: dark)');
+	switchTheme(colorMode.matches ? 'dark' : 'light');
+	colorMode.addEventListener('change', c => {
+		switchTheme(c.matches ? 'dark' : 'light');
+	});
+</script>
+</body>
+</html>

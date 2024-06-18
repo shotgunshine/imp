@@ -26,15 +26,15 @@ IMP.form = (function() {
 	}
 
 	function _setFormRatings(team, ratings) {
-		document.getElementById(team + '_ld').value = 0.75 + ratings.leftDefense;
-		document.getElementById(team + '_cd').value = 0.75 + ratings.centralDefense;
-		document.getElementById(team + '_rd').value = 0.75 + ratings.rightDefense;
-		document.getElementById(team + '_mf').value = 0.75 + ratings.midfield;
-		document.getElementById(team + '_la').value = 0.75 + ratings.leftAttack;
-		document.getElementById(team + '_ca').value = 0.75 + ratings.centralAttack;
-		document.getElementById(team + '_ra').value = 0.75 + ratings.rightAttack;
-		document.getElementById(team + '_sd').value = 0.75 + ratings.ispDefense;
-		document.getElementById(team + '_sa').value = 0.75 + ratings.ispAttack;
+		document.getElementById(team + '_ld').value = (0.75 + ratings.leftDefense).toFixed(2);
+		document.getElementById(team + '_cd').value = (0.75 + ratings.centralDefense).toFixed(2);
+		document.getElementById(team + '_rd').value = (0.75 + ratings.rightDefense).toFixed(2);
+		document.getElementById(team + '_mf').value = (0.75 + ratings.midfield).toFixed(2);
+		document.getElementById(team + '_la').value = (0.75 + ratings.leftAttack).toFixed(2);
+		document.getElementById(team + '_ca').value = (0.75 + ratings.centralAttack).toFixed(2);
+		document.getElementById(team + '_ra').value = (0.75 + ratings.rightAttack).toFixed(2);
+		document.getElementById(team + '_sd').value = (0.75 + ratings.ispDefense).toFixed(2);
+		document.getElementById(team + '_sa').value = (0.75 + ratings.ispAttack).toFixed(2);
 		document.getElementById(team + '_sp').value = ratings.dspProb * 100;
 		document.getElementById(team + '_tc').value = 0;
 		document.getElementById(team + '_tl').value = 0;
@@ -159,6 +159,18 @@ IMP.form = (function() {
 				_setFormRatings(side, ratings);
 				IMP.form.updateLiveProbabilities();
 			});
+		},
+
+		flipRatings: function(homeTeam = true) {
+			let side = homeTeam ? _formSide.home : _formSide.away;
+			let ratings = _getFormRatings(side);
+			let rightDefense = ratings.rightDefense;
+			let rightAttack = ratings.rightAttack;
+			ratings.rightDefense = ratings.leftDefense;
+			ratings.rightAttack = ratings.leftAttack;
+			ratings.leftDefense = rightDefense;
+			ratings.leftAttack = rightAttack;
+			_setFormRatings(side, ratings);
 		},
 
 		importMatchRatings: function(pushState = true) {

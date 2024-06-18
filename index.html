@@ -92,6 +92,7 @@
 				<label for="load_home" class="btn btn-outline my-0">Load</label>
 				<input type="file" accept=".imp" class="d-none" id="load_home" onchange="IMP.form.loadRatings(this)">
 				<button type="button" class="btn btn-outline ms-2" onclick="IMP.form.saveRatings()">Save</button>
+				<button type="button" class="btn btn-outline ms-2" onclick="IMP.form.flipRatings()">Flip</button>
 			</div>
 		</div>
 		<div class="col-12 col-md-6 mb-3">
@@ -165,6 +166,7 @@
 				<label for="load_away" class="btn btn-outline my-0">Load</label>
 				<input type="file" accept=".imp" class="d-none" id="load_away" onchange="IMP.form.loadRatings(this, false)">
 				<button type="button" class="btn btn-outline ms-2" onclick="IMP.form.saveRatings(false)">Save</button>
+				<button type="button" class="btn btn-outline ms-2" onclick="IMP.form.flipRatings(false)">Flip</button>
 			</div>
 		</div>
 	</div>

@@ -203,17 +203,15 @@
 				this.value = Number(this.value).toFixed(2);
 			});
 		});
-		["load", "popstate"].forEach(e => {
-			window.addEventListener(e, event => {
-				let matchId = Number(document.location.pathname.split("/")[2]);
-				if (matchId) {
-					document.getElementById('match_id').value = matchId;
-					IMP.form.importMatchRatings(pushState = false);
-				}
-			});
-		});
 	</script>
 </main>
+<footer>
+	<ul class="nav justify-content-center border-top py-2 mt-4 text-center">
+		<li class="nav-item">
+			<a href="https://github.com/shotgunshine/imp" class="nav-link text-muted">GitHub</a>
+		</li>
+	</ul>
+</footer>
 <script type="text/javascript">
 	function switchTheme(theme) {
 		document.querySelector('html').setAttribute('data-bs-theme', theme);

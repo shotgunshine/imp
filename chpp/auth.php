@@ -24,12 +24,15 @@ function generateSignature($httpMethod, $path, $params, $tokenSecret) {
 	foreach ($params as $key => $value) {
 		array_push($sortedParams, $key . "=" . $value);
 	}
+
 	$signatureBaseString = join('&', array(
 		$httpMethod,
-		urlencode($path),
-		urlencode(join('&', $sortedParams))
+		rawurlencode($path),
+		rawurlencode(join('&', $sortedParams))
 	));
-	$signatureKey = consumerSecret . '&' . $tokenSecret;
+
+	$signatureKey = rawurlencode(consumerSecret) . '&' . rawurlencode($tokenSecret);
+
 	return base64_encode(hash_hmac(
 		'sha1',
 		$signatureBaseString,
@@ -40,14 +43,17 @@ function generateSignature($httpMethod, $path, $params, $tokenSecret) {
 
 function chppRequest($path, $params, $tokenSecret) {
 	$params['oauth_signature'] = generateSignature('GET', $path, $params, $tokenSecret);
+
 	ksort($params);
 	$sortedParams = [];
 	foreach ($params as $key => $value) {
 		array_push($sortedParams, $key . "=" . $value);
 	}
+
 	$curlHandle = curl_init($path . '?' . join('&', $sortedParams));
 	curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
 	$response = curl_exec($curlHandle);
+
 	return $response;
 }
 
@@ -59,6 +65,7 @@ function obtainRequestToken() {
 		'oauth_nonce' => rand(),
 		'oauth_version' => oauthVersion
 	];
+
 	return chppRequest(
 		paths['requestToken'],
 		$params,
@@ -76,6 +83,7 @@ function obtainAccessToken($verifier, $requestToken, $requestTokenSecret) {
 		'oauth_verifier' => $verifier,
 		'oauth_version' => oauthVersion
 	];
+
 	return chppRequest(
 		paths['accessToken'],
 		$params,
@@ -92,6 +100,7 @@ function accessProtectedResource($parameters, $accessToken, $accessTokenSecret) 
 		'oauth_nonce' => rand(),
 		'oauth_version' => oauthVersion
 	];
+
 	return chppRequest(
 		paths['protectedResource'],
 		array_merge($parameters, $params),

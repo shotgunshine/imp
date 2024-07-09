@@ -14,6 +14,7 @@ if ($uri[1] == '' or $uri[1] == 'm') {
 	include_once('view/head.phtml');
 	include_once('view/predictor.phtml');
 	include_once('view/foot.phtml');
+	die();
 }
 
 elseif ($uri[1] == 'myteam') {
@@ -23,6 +24,7 @@ elseif ($uri[1] == 'myteam') {
 		include_once('view/head.phtml');
 		include_once('view/team.phtml');
 		include_once('view/foot.phtml');
+		die();
 	} else {
 		header('Location: /', true, 302);
 		die();
@@ -40,7 +42,9 @@ elseif ($uri[1] == 'login') {
 		header('Location: ' . $path, true, 302);
 		die();
 	} else {
-		header('Location: /', true, 302);
+		include_once('view/head.phtml');
+		include_once('view/chpp.phtml');
+		include_once('view/foot.phtml');
 		die();
 	}
 }
@@ -99,5 +103,8 @@ elseif ($uri[1] == 'logout') {
 
 else {
 	header('HTTP/1.0 404 Not found');
+	include_once('view/head.phtml');
+	include_once('view/404.phtml');
+	include_once('view/foot.phtml');
 	die();
 }

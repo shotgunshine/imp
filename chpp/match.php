@@ -23,5 +23,4 @@ function getMatch($matchId, $sourceSystem = 'hattrick', $matchEvents = false) {
 	} else {
 		header('HTTP/1.0 404 Not found');
 	}
-	die();
 }

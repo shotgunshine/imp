@@ -14,7 +14,6 @@ if ($uri[1] == '' or $uri[1] == 'm') {
 	include_once('view/head.phtml');
 	include_once('view/predictor.phtml');
 	include_once('view/foot.phtml');
-	die();
 }
 
 elseif ($uri[1] == 'myteam') {
@@ -24,10 +23,8 @@ elseif ($uri[1] == 'myteam') {
 		include_once('view/head.phtml');
 		include_once('view/team.phtml');
 		include_once('view/foot.phtml');
-		die();
 	} else {
 		header('Location: /', true, 302);
-		die();
 	}
 }
 
@@ -40,12 +37,10 @@ elseif ($uri[1] == 'login') {
 		$path = paths['authorizeToken'] . '?oauth_token=' . $response['oauth_token'];
 		$path .= '&oauth_callback=https://' . $_SERVER['SERVER_NAME'] . '/request_token_ready';
 		header('Location: ' . $path, true, 302);
-		die();
 	} else {
 		include_once('view/head.phtml');
 		include_once('view/chpp.phtml');
 		include_once('view/foot.phtml');
-		die();
 	}
 }
 
@@ -64,16 +59,14 @@ elseif ($uri[1] == 'request_token_ready') {
 		}
 	}
 	header('Location: /', true, 302);
-	die();
 }
 
 elseif ($uri[1] == 'match') {
 	if ($_SESSION['accessToken']) {
 		require_once 'chpp/match.php';
-		echo getMatch(intval($_GET['matchid']));
+		getMatch(intval($_GET['matchid']));
 	} else {
 		header('HTTP/1.0 403 Forbidden');
-		die();
 	}
 }
 
@@ -82,7 +75,6 @@ elseif ($uri[1] == 'league') {
 //		
 	} else {
 		header('HTTP/1.0 403 Forbidden');
-		die();
 	}
 }
 
@@ -91,14 +83,12 @@ elseif ($uri[1] == 'fixtures') {
 //		$mh = curl_multi_init();
 	} else {
 		header('HTTP/1.0 403 Forbidden');
-		die();
 	}
 }
 
 elseif ($uri[1] == 'logout') {
 	session_destroy();
 	header('Location: /', true, 302);
-	die();
 }
 
 else {
@@ -106,5 +96,4 @@ else {
 	include_once('view/head.phtml');
 	include_once('view/404.phtml');
 	include_once('view/foot.phtml');
-	die();
 }

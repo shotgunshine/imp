@@ -88,18 +88,23 @@ IMP.form = (function() {
 		);
 	}
 
+	function _updateSector(sector, probability) {
+		let label = document.querySelector(`[for="${sector}"] > span`);
+		label.textContent = Math.round(100 * probability) + "%";
+	}
+
 	function _updateLiveProbabilities(home, away) {
 		let h = _getRatings(home);
 		let a = _getRatings(away);
-		document.querySelector(`[for="${home}_ld"] > span`).textContent = Math.round(100 * (1 - IMP.predictor.scoringChance(a.rightAttack, h.leftDefense))) + "%";
-		document.querySelector(`[for="${home}_cd"] > span`).textContent = Math.round(100 * (1 - IMP.predictor.scoringChance(a.centralAttack, h.centralDefense))) + "%";
-		document.querySelector(`[for="${home}_rd"] > span`).textContent = Math.round(100 * (1 - IMP.predictor.scoringChance(a.leftAttack, h.rightDefense))) + "%";
-		document.querySelector(`[for="${home}_mf"] > span`).textContent = Math.round(100 * IMP.predictor.chanceDistribution(h.midfield, a.midfield)) + "%";
-		document.querySelector(`[for="${home}_ra"] > span`).textContent = Math.round(100 * IMP.predictor.scoringChance(h.rightAttack, a.leftDefense)) + "%";
-		document.querySelector(`[for="${home}_ca"] > span`).textContent = Math.round(100 * IMP.predictor.scoringChance(h.centralAttack, a.centralDefense)) + "%";
-		document.querySelector(`[for="${home}_la"] > span`).textContent = Math.round(100 * IMP.predictor.scoringChance(h.leftAttack, a.rightDefense)) + "%";
-		document.querySelector(`[for="${home}_sa"] > span`).textContent = Math.round(100 * IMP.predictor.scoringChance(h.ispAttack, a.ispDefense)) + "%";
-		document.querySelector(`[for="${home}_sd"] > span`).textContent = Math.round(100 * (1 - IMP.predictor.scoringChance(a.ispAttack, h.ispDefense))) + "%";
+		_updateSector(`${home}_ld`, (1 - IMP.predictor.scoringChance(a.rightAttack, h.leftDefense)));
+		_updateSector(`${home}_cd`, (1 - IMP.predictor.scoringChance(a.centralAttack, h.centralDefense)));
+		_updateSector(`${home}_rd`, (1 - IMP.predictor.scoringChance(a.leftAttack, h.rightDefense)));
+		_updateSector(`${home}_mf`, IMP.predictor.chanceDistribution(h.midfield, a.midfield));
+		_updateSector(`${home}_ra`, IMP.predictor.scoringChance(h.rightAttack, a.leftDefense));
+		_updateSector(`${home}_ca`, IMP.predictor.scoringChance(h.centralAttack, a.centralDefense));
+		_updateSector(`${home}_la`, IMP.predictor.scoringChance(h.leftAttack, a.rightDefense));
+		_updateSector(`${home}_sa`, IMP.predictor.scoringChance(h.ispAttack, a.ispDefense));
+		_updateSector(`${home}_sd`, (1 - IMP.predictor.scoringChance(a.ispAttack, h.ispDefense)));
 	}
 
 	return {

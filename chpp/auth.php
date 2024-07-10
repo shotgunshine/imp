@@ -1,5 +1,6 @@
 <?php
 require_once 'keys.php';
+
 const oauthVersion = '1.0';
 const signatureMethod = 'HMAC-SHA1';
 const paths = [
@@ -9,26 +10,29 @@ const paths = [
 	'protectedResource' => 'https://chpp.hattrick.org/chppxml.ashx'
 ];
 
-function getParameters($query) {
-	$params = [];
-	foreach (explode('&', $query) as $tuple) {
+function getParameters($queryString) {
+	$parameters = [];
+	foreach (explode('&', $queryString) as $tuple) {
 		$t = explode('=', $tuple);
-		$params[$t[0]] = $t[1];
+		$parameters[$t[0]] = $t[1];
 	}
-	return $params;
+	return $parameters;
+}
+
+function getQueryString($parameters) {
+	ksort($parameters);
+	$sortedParams = [];
+	foreach ($parameters as $key => $value) {
+		array_push($sortedParams, $key . "=" . $value);
+	}
+	return join('&', $sortedParams);
 }
 
 function generateSignature($httpMethod, $path, $params, $tokenSecret) {
-	ksort($params);
-	$sortedParams = [];
-	foreach ($params as $key => $value) {
-		array_push($sortedParams, $key . "=" . $value);
-	}
-
 	$signatureBaseString = join('&', array(
 		$httpMethod,
 		rawurlencode($path),
-		rawurlencode(join('&', $sortedParams))
+		rawurlencode(getQueryString($params))
 	));
 
 	$signatureKey = rawurlencode(consumerSecret) . '&' . rawurlencode($tokenSecret);
@@ -43,14 +47,7 @@ function generateSignature($httpMethod, $path, $params, $tokenSecret) {
 
 function chppRequest($path, $params, $tokenSecret) {
 	$params['oauth_signature'] = generateSignature('GET', $path, $params, $tokenSecret);
-
-	ksort($params);
-	$sortedParams = [];
-	foreach ($params as $key => $value) {
-		array_push($sortedParams, $key . "=" . $value);
-	}
-
-	$curlHandle = curl_init($path . '?' . join('&', $sortedParams));
+	$curlHandle = curl_init($path . '?' . getQueryString($params));
 	curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
 	$response = curl_exec($curlHandle);
 

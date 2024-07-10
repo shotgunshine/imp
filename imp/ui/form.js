@@ -159,9 +159,11 @@ IMP.form = (function() {
 					_setRatings(_formSide.away, _getXmlRatings(xml.getElementsByTagName('AwayTeam')[0]));
 					IMP.form.updateLiveProbabilities();
 					IMP.form.printPrediction();
-					let homeName = xml.getElementsByTagName('HomeTeamName')[0].slice(0, 8).trim();
-					let awayName = xml.getElementsByTagName('AwayTeamName')[0].slice(0, 8).trim();
-					document.title = `${homeName} - ${awayName} · IMP`;
+					let homeName = xml.getElementsByTagName('HomeTeamName')[0];
+					let awayName = xml.getElementsByTagName('AwayTeamName')[0];
+					document.title = `${homeName.slice(0, 8).trim()} - ${awayName.slice(0, 8).trim()} · IMP`;
+					document.getElementById('home_name').textContent = homeName;
+					document.getElementById('away_name').textContent = awayName;
 					if (pushState) history.pushState({}, null, `/m/${matchId}`);
 				} else {
 					matchForm.classList.add('is-invalid');

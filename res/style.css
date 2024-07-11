@@ -1,8 +1,16 @@
 .container {max-width: 900px;}
 
-label, .btn.p-1, #gradient td {font-size: 0.8rem;}
+label, #copyForumBtn, #doubleHeader, #gradient td {
+	font-size: 0.8rem;
+	vertical-align: middle;
+}
 
 [id^="pred"]:after, [id^="scor"]:after {content: " %";}
+
+#doubleHeader {
+	background: url('line.svg') no-repeat center;
+	background-size: 100% 100%;
+}
 
 html[data-bs-theme="light"] .btn-regular,
 html[data-bs-theme="dark"] .btn-inverted {

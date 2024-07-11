@@ -1,0 +1,16 @@
+<svg viewBox="0 0 48 48" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+	<defs>
+		<style>
+			.imp { stroke: black; }
+			@media (prefers-color-scheme: dark) {
+				.imp { stroke: white; }
+			}
+		</style>
+	</defs>
+	<path
+		class="imp"
+		d="M 0 0 L 48 48"
+		fill="none"
+		stroke-width="1"
+	/>
+</svg>

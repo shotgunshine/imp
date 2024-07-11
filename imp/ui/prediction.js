@@ -45,7 +45,9 @@ IMP.prediction = (function() {
 	}
 
 	function _gradientTable(prediction, rows, cols) {
-		let table = '<thead><tr><th></th>';
+		let table = '<thead><tr><th id="doubleHeader" class="p-0">';
+		table += '<div class="text-end ms-3">Away</div>';
+		table += '<div class="text-start">Home</div></th>';
 		for (let away = 0; away < cols; away++) {
 			table += `<th>${away}</th>`;
 		}
@@ -57,7 +59,7 @@ IMP.prediction = (function() {
 			for (let away = 0; away < cols; away++) {
 				let p = prediction[home][away];
 				let style = `background: rgba(144, 155, 166, ${(p/max)**0.5});`;
-				if (away == home) style += ' box-shadow: var(--bs-body-color) 0 0 0 1px inset;';
+				if (away == home) style += ' border: 1px solid var(--bs-body-color);';
 				table += `<td style="${style}">${p ? (100 * p).toFixed(1) + '%' : '-'}</td>`;
 			}
 			table += '</tr>';

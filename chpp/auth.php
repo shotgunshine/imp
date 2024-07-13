@@ -1,5 +1,5 @@
 <?php
-require_once 'keys.php';
+require 'keys.php';
 
 const oauthVersion = '1.0';
 const signatureMethod = 'HMAC-SHA1';

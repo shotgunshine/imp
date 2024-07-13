@@ -1,5 +1,5 @@
 <?php
-require_once 'auth.php';
+require 'auth.php';
 
 function getMatch($matchId, $sourceSystem = 'hattrick', $matchEvents = false) {
 	$params = [

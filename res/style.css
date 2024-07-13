@@ -1,3 +1,11 @@
+@font-face {
+	font-family: 'Cantarell';
+	font-display: swap;
+	src: url('font/Cantarell-VF.otf');
+}
+
+body {font-family: 'Cantarell';}
+
 .container {max-width: 900px;}
 
 label, #copyForumBtn, #doubleHeader, #gradient td {

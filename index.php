@@ -38,8 +38,10 @@ elseif ($uri[1] == 'login') {
 		$path .= '&oauth_callback=https://' . $_SERVER['SERVER_NAME'] . '/request_token_ready';
 		header('Location: ' . $path, true, 302);
 	} else {
+		$title = 'Authorization error';
 		require 'view/head.phtml';
-		require 'view/chpp.phtml';
+		$error = 'Hattrick may be unreachable at the moment, please try again later.';
+		require 'view/error.phtml';
 		require 'view/foot.phtml';
 	}
 }
@@ -92,7 +94,9 @@ elseif ($uri[1] == 'logout') {
 
 else {
 	header('HTTP/1.0 404 Not found');
+	$title = 'Page not found';
 	require 'view/head.phtml';
-	require 'view/404.phtml';
+	$error = 'The requested resource could not be found.';
+	require 'view/error.phtml';
 	require 'view/foot.phtml';
 }

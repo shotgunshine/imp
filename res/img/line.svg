@@ -1,9 +1,13 @@
-<svg viewBox="0 0 48 48" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+<svg
+	viewBox="0 0 48 48"
+	xmlns="http://www.w3.org/2000/svg"
+	preserveAspectRatio="none"
+>
 	<defs>
 		<style>
-			.imp { stroke: black; }
+			.imp { stroke: #212529; }
 			@media (prefers-color-scheme: dark) {
-				.imp { stroke: white; }
+				.imp { stroke: #dee2e6; }
 			}
 		</style>
 	</defs>

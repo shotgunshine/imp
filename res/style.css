@@ -8,7 +8,7 @@ label, #copyForumBtn, #doubleHeader, #gradient td {
 [id^="pred"]:after, [id^="scor"]:after {content: " %";}
 
 #doubleHeader {
-	background: url('line.svg') no-repeat center;
+	background: url('img/line.svg') no-repeat center;
 	background-size: 100% 100%;
 }
 

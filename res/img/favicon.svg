@@ -1,9 +1,9 @@
 <svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
 	<defs>
 		<style>
-			.imp { fill: black; }
+			.imp { fill: #212529; }
 			@media (prefers-color-scheme: dark) {
-				.imp { fill: white; }
+				.imp { fill: #dee2e6; }
 			}
 		</style>
 	</defs>

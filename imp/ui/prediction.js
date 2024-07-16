@@ -83,8 +83,6 @@ IMP.prediction = (function() {
 				document.execCommand('copy');
 				text.remove();
 			}
-			button.textContent = 'Copied!';
-			setTimeout(() => { button.textContent = 'Copy' }, 500);
 		},
 
 		printPrediction: function() {

@@ -1,157 +1,245 @@
 	<div class="row">
 		<div class="col-12 col-md-6">
-			<h3 id="home_name">Home team</h3>
+			<h3 id="home_name"><?= getTranslation('predictorHomeTeam') ?></h3>
 			<div class="row justify-content-center align-items-end">
 				<div class="col-4">
-					<label for="home_rd"><span class="fw-bolder">-</span> Right defense</label>
+					<label for="home_rd">
+						<span class="fw-bolder">-</span>
+						<?= getTranslation('predictorRightDefense') ?>
+					</label>
 					<input type="number" value="10.00" step="0.25" class="form-control text-center" id="home_rd">
 				</div>
 				<div class="col-4">
-					<label for="home_cd"><span class="fw-bolder">-</span> Central defense</label>
+					<label for="home_cd">
+						<span class="fw-bolder">-</span>
+						<?= getTranslation('predictorCentralDefense') ?>
+					</label>
 					<input type="number" value="10.00" step="0.25" class="form-control text-center" id="home_cd">
 				</div>
 				<div class="col-4">
-					<label for="home_ld"><span class="fw-bolder">-</span> Left defense</label>
+					<label for="home_ld">
+						<span class="fw-bolder">-</span>
+						<?= getTranslation('predictorLeftDefense') ?>
+					</label>
 					<input type="number" value="10.00" step="0.25" class="form-control text-center" id="home_ld">
 				</div>
 			</div>
 			<div class="row justify-content-center align-items-end">
 				<div class="col-4">
-					<label for="home_mf"><span class="fw-bolder">-</span> Midfield</label>
+					<label for="home_mf">
+						<span class="fw-bolder">-</span>
+						<?= getTranslation('predictorMidfield') ?>
+					</label>
 					<input type="number" value="10.00" step="0.25" class="form-control text-center" id="home_mf">
 				</div>
 			</div>
 			<div class="row justify-content-center align-items-end">
 				<div class="col-4">
-					<label for="home_ra"><span class="fw-bolder">-</span> Right attack</label>
+					<label for="home_ra">
+						<span class="fw-bolder">-</span>
+						<?= getTranslation('predictorRightAttack') ?>
+					</label>
 					<input type="number" value="10.00" step="0.25" class="form-control text-center" id="home_ra">
 				</div>
 				<div class="col-4">
-					<label for="home_ca"><span class="fw-bolder">-</span> Central attack</label>
+					<label for="home_ca">
+						<span class="fw-bolder">-</span>
+						<?= getTranslation('predictorCentralAttack') ?>
+					</label>
 					<input type="number" value="10.00" step="0.25" class="form-control text-center" id="home_ca">
 				</div>
 				<div class="col-4">
-					<label for="home_la"><span class="fw-bolder">-</span> Left attack</label>
+					<label for="home_la">
+						<span class="fw-bolder">-</span>
+						<?= getTranslation('predictorLeftAttack') ?>
+					</label>
 					<input type="number" value="10.00" step="0.25" class="form-control text-center" id="home_la">
 				</div>
 			</div>
 			<div class="row justify-content-center align-items-end">
 				<div class="col-4">
-					<label for="home_sd"><span class="fw-bolder">-</span> Ind. SP defense</label>
+					<label for="home_sd">
+						<span class="fw-bolder">-</span>
+						<?= getTranslation('predictorIndirectDefense') ?>
+					</label>
 					<input type="number" value="10.00" step="0.25" class="form-control text-center" id="home_sd">
 				</div>
 				<div class="col-4">
-					<label for="home_sa"><span class="fw-bolder">-</span> Ind. SP attack</label>
+					<label for="home_sa">
+						<span class="fw-bolder">-</span>
+						<?= getTranslation('predictorIndirectAttack') ?>
+					</label>
 					<input type="number" value="10.00" step="0.25" class="form-control text-center" id="home_sa">
 				</div>
 				<div class="col-4">
-					<label for="home_sp">Direct SP %</label>
+					<label for="home_sp"><?= getTranslation('predictorDirectSetPieces') ?></label>
 					<input type="number" value="25" class="form-control text-center" id="home_sp">
 				</div>
 			</div>
 			<div class="row justify-content-center align-items-end">
 				<div class="col-8">
-					<label for="home_tc">Tactic</label>
+					<label for="home_tc"><?= getTranslation('predictorTactic') ?></label>
 					<select class="form-select" id="home_tc">
-						<option value="0">Normal</option>
-						<option value="1">Pressing</option>
-						<option value="2">Counter-attacks</option>
-						<option value="3">Attack in the middle</option>
-						<option value="4">Attack on the wings</option>
-						<option value="8">Long shots</option>
+						<option value="0"><?= getTranslation('predictorTactic0') ?></option>
+						<option value="1"><?= getTranslation('predictorTactic1') ?></option>
+						<option value="2"><?= getTranslation('predictorTactic2') ?></option>
+						<option value="3"><?= getTranslation('predictorTactic3') ?></option>
+						<option value="4"><?= getTranslation('predictorTactic4') ?></option>
+						<option value="8"><?= getTranslation('predictorTactic8') ?></option>
 					</select>
 				</div>
 				<div class="col-4">
-					<label for="home_tl">Tactic level</label>
+					<label for="home_tl"><?= getTranslation('predictorTacticLevel') ?></label>
 					<input type="number" class="form-control text-center" id="home_tl">
 				</div>
 			</div>
 			<div class="my-3 d-flex">
-				<button type="button" class="btn btn-outline" onclick="IMP.form.saveHomeRatings()">Save</button>
-				<label for="load_home" class="btn btn-outline ms-2 my-0">Load</label>
-				<input type="file" accept=".imp" class="d-none" id="load_home" onchange="IMP.form.loadHomeRatings(this)">
-				<button type="button" class="btn btn-outline ms-2" onclick="IMP.form.flipHomeRatings()">Flip</button>
+				<button
+					type="button"
+					class="btn btn-outline"
+					onclick="IMP.form.saveHomeRatings()"
+					><?= getTranslation('predictorSave') ?></button>
+				<label
+					for="load_home"
+					class="btn btn-outline ms-2 my-0"
+					><?= getTranslation('predictorLoad') ?></label>
+				<input
+					type="file"
+					accept=".imp"
+					class="d-none"
+					id="load_home"
+					onchange="IMP.form.loadHomeRatings(this)">
+				<button
+					type="button"
+					class="btn btn-outline ms-2"
+					onclick="IMP.form.flipHomeRatings()"
+					><?= getTranslation('predictorFlip') ?></button>
 			</div>
 		</div>
 		<div class="col-12 col-md-6">
-			<h3 id="away_name">Away team</h3>
+			<h3 id="away_name"><?= getTranslation('predictorAwayTeam') ?></h3>
 			<div class="row justify-content-center align-items-end">
 				<div class="col-4">
-					<label for="away_rd"><span class="fw-bolder">-</span> Right defense</label>
+					<label for="away_rd">
+						<span class="fw-bolder">-</span>
+						<?= getTranslation('predictorRightDefense') ?>
+					</label>
 					<input type="number" value="10.00" step="0.25" class="form-control text-center" id="away_rd">
 				</div>
 				<div class="col-4">
-					<label for="away_cd"><span class="fw-bolder">-</span> Central defense</label>
+					<label for="away_cd">
+						<span class="fw-bolder">-</span>
+						<?= getTranslation('predictorCentralDefense') ?>
+					</label>
 					<input type="number" value="10.00" step="0.25" class="form-control text-center" id="away_cd">
 				</div>
 				<div class="col-4">
-					<label for="away_ld"><span class="fw-bolder">-</span> Left defense</label>
+					<label for="away_ld">
+						<span class="fw-bolder">-</span>
+						<?= getTranslation('predictorLeftDefense') ?>
+					</label>
 					<input type="number" value="10.00" step="0.25" class="form-control text-center" id="away_ld">
 				</div>
 			</div>
 			<div class="row justify-content-center align-items-end">
 				<div class="col-4">
-					<label for="away_mf"><span class="fw-bolder">-</span> Midfield</label>
+					<label for="away_mf">
+						<span class="fw-bolder">-</span>
+						<?= getTranslation('predictorMidfield') ?>
+					</label>
 					<input type="number" value="10.00" step="0.25" class="form-control text-center" id="away_mf">
 				</div>
 			</div>
 			<div class="row justify-content-center align-items-end">
 				<div class="col-4">
-					<label for="away_ra"><span class="fw-bolder">-</span> Right attack</label>
+					<label for="away_ra">
+						<span class="fw-bolder">-</span>
+						<?= getTranslation('predictorRightAttack') ?>
+					</label>
 					<input type="number" value="10.00" step="0.25" class="form-control text-center" id="away_ra">
 				</div>
 				<div class="col-4">
-					<label for="away_ca"><span class="fw-bolder">-</span> Central attack</label>
+					<label for="away_ca">
+						<span class="fw-bolder">-</span>
+						<?= getTranslation('predictorCentralAttack') ?>
+					</label>
 					<input type="number" value="10.00" step="0.25" class="form-control text-center" id="away_ca">
 				</div>
 				<div class="col-4">
-					<label for="away_la"><span class="fw-bolder">-</span> Left attack</label>
+					<label for="away_la">
+						<span class="fw-bolder">-</span>
+						<?= getTranslation('predictorLeftAttack') ?>
+					</label>
 					<input type="number" value="10.00" step="0.25" class="form-control text-center" id="away_la">
 				</div>
 			</div>
 			<div class="row justify-content-center align-items-end">
 				<div class="col-4">
-					<label for="away_sd"><span class="fw-bolder">-</span> Ind. SP defense</label>
+					<label for="away_sd">
+						<span class="fw-bolder">-</span>
+						<?= getTranslation('predictorIndirectDefense') ?>
+					</label>
 					<input type="number" value="10.00" step="0.25" class="form-control text-center" id="away_sd">
 				</div>
 				<div class="col-4">
-					<label for="away_sa"><span class="fw-bolder">-</span> Ind. SP attack</label>
+					<label for="away_sa">
+						<span class="fw-bolder">-</span>
+						<?= getTranslation('predictorIndirectAttack') ?>
+					</label>
 					<input type="number" value="10.00" step="0.25" class="form-control text-center" id="away_sa">
 				</div>
 				<div class="col-4">
-					<label for="away_sp">Direct SP %</label>
+					<label for="away_sp"><?= getTranslation('predictorDirectSetPieces') ?></label>
 					<input type="number" value="25" class="form-control text-center" id="away_sp">
 				</div>
 			</div>
 			<div class="row justify-content-center align-items-end">
 				<div class="col-8">
-					<label for="away_tc">Tactic</label>
+					<label for="away_tc"><?= getTranslation('predictorTactic') ?></label>
 					<select class="form-select" id="away_tc">
-						<option value="0">Normal</option>
-						<option value="1">Pressing</option>
-						<option value="2">Counter-attacks</option>
-						<option value="3">Attack in the middle</option>
-						<option value="4">Attack on the wings</option>
-						<option value="8">Long shots</option>
+						<option value="0"><?= getTranslation('predictorTactic0') ?></option>
+						<option value="1"><?= getTranslation('predictorTactic1') ?></option>
+						<option value="2"><?= getTranslation('predictorTactic2') ?></option>
+						<option value="3"><?= getTranslation('predictorTactic3') ?></option>
+						<option value="4"><?= getTranslation('predictorTactic4') ?></option>
+						<option value="8"><?= getTranslation('predictorTactic8') ?></option>
 					</select>
 				</div>
 				<div class="col-4">
-					<label for="away_tl">Tactic level</label>
+					<label for="away_tl"><?= getTranslation('predictorTacticLevel') ?></label>
 					<input type="number" class="form-control text-center" id="away_tl">
 				</div>
 			</div>
 			<div class="my-3 d-flex">
-				<button type="button" class="btn btn-outline" onclick="IMP.form.saveAwayRatings()">Save</button>
-				<label for="load_away" class="btn btn-outline ms-2 my-0">Load</label>
-				<input type="file" accept=".imp" class="d-none" id="load_away" onchange="IMP.form.loadAwayRatings(this)">
-				<button type="button" class="btn btn-outline ms-2" onclick="IMP.form.flipAwayRatings()">Flip</button>
+				<button
+					type="button"
+					class="btn btn-outline"
+					onclick="IMP.form.saveAwayRatings()"
+					><?= getTranslation('predictorSave') ?></button>
+				<label
+					for="load_away"
+					class="btn btn-outline ms-2 my-0"
+					><?= getTranslation('predictorLoad') ?></label>
+				<input
+					type="file"
+					accept=".imp"
+					class="d-none"
+					id="load_away"
+					onchange="IMP.form.loadAwayRatings(this)">
+				<button
+					type="button"
+					class="btn btn-outline ms-2"
+					onclick="IMP.form.flipAwayRatings()"
+					><?= getTranslation('predictorFlip') ?></button>
 				<div class="input-group ms-2">
-					<input type="text" class="form-control" id="match_id" placeholder="Match ID">
+					<input type="text" class="form-control" id="match_id" placeholder="MatchID">
 					<button
 						class="btn btn-outline rounded-end"
 						type="button" onclick="IMP.form.importMatchRatings()"
-						>Import</button>
-					<div class="invalid-feedback" style="position: absolute; top: 33px;">Sign in required</div>
+						><?= getTranslation('predictorImport') ?></button>
+					<div class="invalid-feedback" style="position: absolute; top: 33px;">
+						<?= getTranslation('predictorImportInvalid') ?>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -160,28 +248,32 @@
 		type="button"
 		class="btn btn-regular float-end"
 		onclick="IMP.prediction.printPrediction()"
-		>Predict</button>
-	<h3>Prediction</h3>
+		><?= getTranslation('predictorPredict') ?></button>
+	<h3><?= getTranslation('predictorPrediction') ?></h3>
 	<button
 		id="copyForumBtn"
-		class="btn btn-outline position-absolute py-1 my-1"
+		class="btn btn-inverted position-absolute p-1 my-1"
 		onclick="IMP.prediction.copyForumTable(this)"
-		title="Copy forum table"
-		>Copy</button>
+		title="<?= getTranslation('predictorCopyAlt') ?>"
+		><img src="/res/img/copy.svg" width=16></button>
 	<table class="table text-center">
 		<thead>
-			<tr><th width="33%">Home</th><th width="33%">Draw</th><th width="33%">Away</th></tr>
+			<tr>
+				<th width="33%" id="head1"><?= getTranslation('predictorHomeShort') ?></th>
+				<th width="33%" id="headx"><?= getTranslation('predictorDraw') ?></th>
+				<th width="33%" id="head2"><?= getTranslation('predictorAwayShort') ?></th>
+			</tr>
 		</thead>
 		<tbody>
 			<tr><td id="pred1">-</td><td id="predx">-</td><td id="pred2">-</td></tr>
-			<tr><td id="goal1">-</td><th>Goals</th><td id="goal2">-</td></tr>
-			<tr><td id="chan1">-</td><th>Chances</th><td id="chan2">-</td></tr>
-			<tr><td id="scor1">-</td><th>Scoring</th><td id="scor2">-</td></tr>
+			<tr><td id="goal1">-</td><th><?= getTranslation('predictorGoals') ?></th><td id="goal2">-</td></tr>
+			<tr><td id="chan1">-</td><th><?= getTranslation('predictorChances') ?></th><td id="chan2">-</td></tr>
+			<tr><td id="scor1">-</td><th><?= getTranslation('predictorScoring') ?></th><td id="scor2">-</td></tr>
 		</tbody>
 	</table>
 	<div class="table-responsive-md" id="gradient"></div>
-	<p>Sim doesn't understand if the tactic skill is enough compared to the mainskill average of the players. So be careful when it suggests that CA is a good tactic, with tactic skill of 10 and combined hatstats in the game are something like 800.</p>
-	<p>Special events are coming soon.</p>
+	<p><?= getTranslation('predictorDisclaimerTactics') ?></p>
+	<p><?= getTranslation('predictorDisclaimerSEs') ?></p>
 	<script type="text/javascript">
 		document.onload = IMP.form.updateLiveProbabilities();
 		document.querySelectorAll('[step="0.25"]').forEach(input => {

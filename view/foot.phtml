@@ -2,8 +2,22 @@
 <footer class="mt-auto">
 	<ul class="nav justify-content-center border-top py-2 text-center">
 		<li class="nav-item"><a href="#" class="nav-link text-muted">CHPP</a></li>
-		<li class="nav-item"><a href="#" class="nav-link text-muted">Forum</a></li>
-		<li class="nav-item"><a href="#" class="nav-link text-muted">Source code</a></li>
+		<li class="nav-item"><a href="#" class="nav-link text-muted"><?= getTranslation('footForum') ?></a></li>
+		<li class="nav-item"><a href="#" class="nav-link text-muted"><?= getTranslation('footPrivacy') ?></a></li>
+		<li class="nav-item">
+			<form class="d-flex" method="post">
+				<select class="form-select text-muted" name="language_id" onchange="this.form.submit()">
+<?php
+$selected = $_SESSION['languageId'] ?? 0;
+foreach (languages as $l) {
+	echo '<option value="' . $l['id'] . '"';
+	if ($selected == $l['id']) echo ' selected';
+	echo '>' . $l['name'] . '</option>';
+}
+?>
+				</select>
+			</form>
+		</li>
 	</ul>
 </footer>
 <script type="text/javascript">

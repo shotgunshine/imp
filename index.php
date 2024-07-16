@@ -6,6 +6,8 @@ session_start([
 	'cookie_samesite' => 'Strict',
 ]);
 
+require 'lang/lang.php';
+
 error_reporting(E_ALL);
 
 $uri = explode('/', parse_url($_SERVER['REQUEST_URI'])['path']);
@@ -38,9 +40,9 @@ elseif ($uri[1] == 'login') {
 		$path .= '&oauth_callback=https://' . $_SERVER['SERVER_NAME'] . '/request_token_ready';
 		header('Location: ' . $path, true, 302);
 	} else {
-		$title = 'Authorization error';
+		$title = getTranslation('errorChppTitle');
 		require 'view/head.phtml';
-		$error = 'Hattrick may be unreachable at the moment, please try again later.';
+		$error = getTranslation('errorChppMessage');
 		require 'view/error.phtml';
 		require 'view/foot.phtml';
 	}
@@ -94,9 +96,9 @@ elseif ($uri[1] == 'logout') {
 
 else {
 	header('HTTP/1.0 404 Not found');
-	$title = 'Page not found';
+	$title = getTranslation('errorNotFoundTitle');
 	require 'view/head.phtml';
-	$error = 'The requested resource could not be found.';
+	$error = getTranslation('errorNotFoundMessage');
 	require 'view/error.phtml';
 	require 'view/foot.phtml';
 }

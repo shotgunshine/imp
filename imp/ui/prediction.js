@@ -45,9 +45,11 @@ IMP.prediction = (function() {
 	}
 
 	function _gradientTable(prediction, rows, cols) {
+		let labelHome = document.getElementById('head1').textContent;
+		let labelAway = document.getElementById('head2').textContent;
 		let table = '<thead><tr><th id="doubleHeader" class="p-0">';
-		table += '<div class="text-end ms-3">Away</div>';
-		table += '<div class="text-start">Home</div></th>';
+		table += `<div class="text-end ms-3">${labelAway}</div>`;
+		table += `<div class="text-start">${labelHome}</div></th>`;
 		for (let away = 0; away < cols; away++) {
 			table += `<th>${away}</th>`;
 		}
@@ -83,8 +85,6 @@ IMP.prediction = (function() {
 				document.execCommand('copy');
 				text.remove();
 			}
-			button.textContent = 'Copied!';
-			setTimeout(() => { button.textContent = 'Copy' }, 500);
 		},
 
 		printPrediction: function() {

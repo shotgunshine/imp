@@ -13,7 +13,13 @@ label, #copyForumBtn, #doubleHeader, #gradient td {
 	vertical-align: middle;
 }
 
-[id^="pred"]:after, [id^="scor"]:after {content: " %";}
+[id^="pred"]:after, [id^="scor"]:after, [for*="_sp"]:after {content: " %";}
+
+[for*="_sp"]:after {
+	position: relative;
+	top: 30px;
+	left: 15px;
+}
 
 #doubleHeader {
 	background: url('img/line.svg') no-repeat center;
@@ -58,6 +64,7 @@ html[data-bs-theme="light"] .btn-inverted {
 
 html[data-bs-theme="light"] .btn-outline {
 	--bs-btn-color: #212529;
+	--bs-btn-bg: #fff;
 	--bs-btn-border-color: #212529;
 	--bs-btn-hover-color: #fff;
 	--bs-btn-hover-bg: #212529;
@@ -75,6 +82,7 @@ html[data-bs-theme="light"] .btn-outline {
 
 html[data-bs-theme="dark"] .btn-outline {
 	--bs-btn-color: #f8f9fa;
+	--bs-btn-bg: #212529;
 	--bs-btn-border-color: #f8f9fa;
 	--bs-btn-hover-color: #000;
 	--bs-btn-hover-bg: #f8f9fa;

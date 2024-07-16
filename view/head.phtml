@@ -15,21 +15,21 @@
 	<link href="/res/img/favicon.svg" rel="icon" type="image/svg+xml">
 </head>
 <body class="d-flex flex-column min-vh-100">
-<header class="navbar navbar-light border-bottom">
+<header class="navbar navbar-light border-bottom bg-body sticky-top">
 	<nav class="container">
 		<a href="/" class="navbar-brand"><img src="/res/img/favicon.svg" width="32" class="me-2 align-top">IMP</a>
 		<div class="navbar-nav flex-row flex-grow-1">
 <?php
 if (isset($_SESSION['accessToken'])) {
-	echo '<a href="/myteam" class="nav-link active">My Team</a>';
+	echo '<a href="/myteam" class="nav-link active">' . getTranslation('headMyTeam') . '</a>';
 }
 ?>
 		</div>
 <?php
 if (isset($_SESSION['accessToken'])) {
-	echo '<a href="/logout" role="button" class="btn btn-inverted">Log out</a>';
+	echo '<a href="/logout" role="button" class="btn btn-inverted">' . getTranslation('headLogout') . '</a>';
 } else {
-	echo '<a href="/login" role="button" class="btn btn-inverted">Sign in</a>';
+	echo '<a href="/login" role="button" class="btn btn-inverted">' . getTranslation('headLogin') . '</a>';
 }
 ?>
 	</nav>

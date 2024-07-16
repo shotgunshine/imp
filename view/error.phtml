@@ -1,2 +1,2 @@
-<h3><?= $title ?? 'Error' ?></h3>
-<p><?= $error ?? 'An unexpected error occurred.' ?></p>
+<h3><?= $title ?? getTranslation('errorGenericTitle') ?></h3>
+<p><?= $error ?? getTranslation('errorGenericMessage') ?></p>

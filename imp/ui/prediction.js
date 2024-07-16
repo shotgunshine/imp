@@ -59,7 +59,7 @@ IMP.prediction = (function() {
 			for (let away = 0; away < cols; away++) {
 				let p = prediction[home][away];
 				let style = `background: rgba(144, 155, 166, ${(p/max)**0.5});`;
-				if (away == home) style += ' border: 1px solid var(--bs-body-color);';
+				if (away == home && home < 8) style += ' border: 1px solid var(--bs-body-color);';
 				table += `<td style="${style}">${p ? (100 * p).toFixed(1) + '%' : '-'}</td>`;
 			}
 			table += '</tr>';

@@ -64,12 +64,17 @@ elseif ($uri[1] == 'request_token_ready') {
 	header('Location: /', true, 302);
 }
 
+elseif ($uri[1] == 'logout') {
+	session_destroy();
+	header('Location: /', true, 302);
+}
+
 elseif ($uri[1] == 'match') {
 	if (isset($_SESSION['accessToken'])) {
 		require 'chpp/match.php';
 		getMatch(intval($_GET['matchid']));
 	} else {
-		header('HTTP/1.0 403 Forbidden');
+		header('HTTP/1.0 401 Unauthorized');
 	}
 }
 
@@ -77,7 +82,7 @@ elseif ($uri[1] == 'league') {
 	if (isset($_SESSION['accessToken'])) {
 //		
 	} else {
-		header('HTTP/1.0 403 Forbidden');
+		header('HTTP/1.0 401 Unauthorized');
 	}
 }
 
@@ -85,13 +90,8 @@ elseif ($uri[1] == 'fixtures') {
 	if (isset($_SESSION['accessToken'])) {
 //		$mh = curl_multi_init();
 	} else {
-		header('HTTP/1.0 403 Forbidden');
+		header('HTTP/1.0 401 Unauthorized');
 	}
-}
-
-elseif ($uri[1] == 'logout') {
-	session_destroy();
-	header('Location: /', true, 302);
 }
 
 else {

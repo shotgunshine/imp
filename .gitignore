@@ -1,0 +1,7 @@
+~*
+.*
+*~.*
+*.tmp
+*.swp
+tags
+nginx.conf

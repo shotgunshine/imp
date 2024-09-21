@@ -13,13 +13,7 @@ label, #copyForumBtn, #doubleHeader, #gradient td {
 	vertical-align: middle;
 }
 
-[id^="pred"]:after, [id^="scor"]:after, [for*="_sp"]:after {content: " %";}
-
-[for*="_sp"]:after {
-	position: relative;
-	top: 30px;
-	left: 15px;
-}
+[id^="pred"]:after, [id^="scor"]:after {content: " %";}
 
 #doubleHeader {
 	background: url('img/line.svg') no-repeat center;

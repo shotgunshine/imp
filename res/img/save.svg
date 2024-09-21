@@ -1,0 +1,18 @@
+<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+	<defs>
+		<style>
+			.imp { stroke: #212529; }
+			@media (prefers-color-scheme: dark) {
+				.imp { stroke: #dee2e6; }
+			}
+		</style>
+	</defs>
+	<path
+		class="imp"
+		d="M12 1 v18 M1 23 h22 M3 10 l9 9 l9 -9"
+		fill="none"
+		stroke-linecap="round"
+		stroke-linejoin="round"
+		stroke-width="2"
+	/>
+</svg>

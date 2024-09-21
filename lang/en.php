@@ -47,4 +47,5 @@ return [
 	"predictorScoring" => "Scoring",
 	"predictorDisclaimerTactics" => "Sim doesn't understand if the tactic skill is enough compared to the mainskill average of the players. So be careful when it suggests that CA is a good tactic, with tactic skill of 10 and combined hatstats in the game are something like 800.",
 	"predictorDisclaimerSEs" => "Special events are coming soon.",
+	"predictorDisclaimerDynamics" => "Dynamic pullback is ignored.",
 ];

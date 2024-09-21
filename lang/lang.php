@@ -11,6 +11,11 @@ if (isset($_POST['language_id'])) {
 	}
 }
 $defaultLanguage = require 'en.php';
+if (!isset($_SESSION['languageId'])) {
+	$accept = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+	if ($accept == 'en') $_SESSION['languageId'] = 0;
+	if ($accept == 'it') $_SESSION['languageId'] = 1;
+}
 if (isset($_SESSION['languageId'])) {
 	$currentLanguage = require languages[$_SESSION['languageId']]['file'];
 }

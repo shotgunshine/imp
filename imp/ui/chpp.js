@@ -71,7 +71,7 @@ IMP.chpp = (function() {
 					}
 					IMP.form.setHomeRatings(homeRatings);
 					IMP.form.setAwayRatings(awayRatings);
-					IMP.prediction.printPrediction();
+					IMP.prediction.printPrediction(false);
 					document.title = `${homeName.slice(0, 8).trim()} - ${awayName.slice(0, 8).trim()} · IMP`;
 					document.getElementById('home_name').textContent = homeName;
 					document.getElementById('away_name').textContent = awayName;

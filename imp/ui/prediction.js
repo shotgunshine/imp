@@ -13,10 +13,12 @@ IMP.prediction = (function() {
 		};
 	}
 
-	function _printDelta(node, value, digits) {
+	function _printDelta(node, value, digits, showDelta) {
 		node.textContent = value.toFixed(digits);
-		let diff = value - (node.getAttribute('data') ?? value);
-		if (diff) node.textContent += ` (${(diff > 0) ? "+" : ""}${diff.toFixed(digits)})`;
+		if (showDelta) {
+			let diff = value - (node.getAttribute('data') ?? value);
+			if (diff) node.textContent += ` (${(diff > 0) ? "+" : ""}${diff.toFixed(digits)})`;
+		}
 		node.setAttribute('data', value);
 	}
 
@@ -87,7 +89,7 @@ IMP.prediction = (function() {
 			}
 		},
 
-		printPrediction: function() {
+		printPrediction: function(showDeltas = true) {
 			let home = IMP.form.getHomeRatings();
 			let away = IMP.form.getAwayRatings();
 
@@ -108,18 +110,18 @@ IMP.prediction = (function() {
 				countersHome,
 				countersAway
 			);
-			_printDelta(document.getElementById('pred1'), 100 * _odds(prediction).win, 1);
-			_printDelta(document.getElementById('predx'), 100 * _odds(prediction).draw, 1);
-			_printDelta(document.getElementById('pred2'), 100 * _odds(prediction).loss, 1);
+			_printDelta(document.getElementById('pred1'), 100 * _odds(prediction).win, 1, showDeltas);
+			_printDelta(document.getElementById('predx'), 100 * _odds(prediction).draw, 1, showDeltas);
+			_printDelta(document.getElementById('pred2'), 100 * _odds(prediction).loss, 1, showDeltas);
 
 			let avgChancesHome = possession + countersHome * (1 - possession) * (1 - avgScoringAway);
 			let avgChancesAway = (1 - possession) + countersAway * possession * (1 - avgScoringHome);
-			_printDelta(document.getElementById('goal1'), 10 * avgChancesHome * (1 - pressing) * avgScoringHome, 2);
-			_printDelta(document.getElementById('goal2'), 10 * avgChancesAway * (1 - pressing) * avgScoringAway, 2);
-			_printDelta(document.getElementById('chan1'), 10 * avgChancesHome * (1 - pressing), 2);
-			_printDelta(document.getElementById('chan2'), 10 * avgChancesAway * (1 - pressing), 2);
-			_printDelta(document.getElementById('scor1'), 100 * avgScoringHome, 1);
-			_printDelta(document.getElementById('scor2'), 100 * avgScoringAway, 1);
+			_printDelta(document.getElementById('goal1'), 10 * avgChancesHome * (1 - pressing) * avgScoringHome, 2, showDeltas);
+			_printDelta(document.getElementById('goal2'), 10 * avgChancesAway * (1 - pressing) * avgScoringAway, 2, showDeltas);
+			_printDelta(document.getElementById('chan1'), 10 * avgChancesHome * (1 - pressing), 2, showDeltas);
+			_printDelta(document.getElementById('chan2'), 10 * avgChancesAway * (1 - pressing), 2, showDeltas);
+			_printDelta(document.getElementById('scor1'), 100 * avgScoringHome, 1, showDeltas);
+			_printDelta(document.getElementById('scor2'), 100 * avgScoringAway, 1, showDeltas);
 
 			document.getElementById('gradient').replaceChildren(_gradientTable(
 				prediction,

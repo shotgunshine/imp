@@ -241,7 +241,7 @@
 					<input type="text" class="form-control" id="match_id" placeholder="MatchID">
 					<button
 						class="btn btn-outline rounded-end"
-						type="button" onclick="IMP.form.importMatchRatings()"
+						type="button" onclick="IMP.chpp.importMatchRatings()"
 						>→</button>
 					<div class="invalid-feedback" style="position: absolute; top: 33px;">
 						<?= getTranslation('predictorImportInvalid') ?>
@@ -294,7 +294,7 @@
 				let matchId = Number(document.location.pathname.split("/")[2]);
 				if (matchId) {
 					document.getElementById('match_id').value = matchId;
-					IMP.form.importMatchRatings(pushState = false);
+					IMP.chpp.importMatchRatings(pushState = false);
 				}
 			});
 		});

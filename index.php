@@ -78,20 +78,9 @@ elseif ($uri[1] == 'match') {
 	}
 }
 
-elseif ($uri[1] == 'league') {
-	if (isset($_SESSION['accessToken'])) {
-//		
-	} else {
-		header('HTTP/1.0 401 Unauthorized');
-	}
-}
-
-elseif ($uri[1] == 'fixtures') {
-	if (isset($_SESSION['accessToken'])) {
-//		$mh = curl_multi_init();
-	} else {
-		header('HTTP/1.0 401 Unauthorized');
-	}
+elseif ($uri[1] == 'match_scrape') {
+	require 'chpp/match.php';
+	scrapeMatch(intval($_GET['matchid']));
 }
 
 else {

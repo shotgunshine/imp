@@ -73,18 +73,35 @@ IMP.form = (function() {
 
 	function _getXmlRatings(xml) {
 		return new IMP.ratings(
-			xml.getElementsByTagName('RatingLeftDef')[0] / 4 + 0.75,
-			xml.getElementsByTagName('RatingMidDef')[0] / 4 + 0.75,
-			xml.getElementsByTagName('RatingRightDef')[0] / 4 + 0.75,
-			xml.getElementsByTagName('RatingMidfield')[0] / 4 + 0.75,
-			xml.getElementsByTagName('RatingLeftAtt')[0] / 4 + 0.75,
-			xml.getElementsByTagName('RatingMidAtt')[0] / 4 + 0.75,
-			xml.getElementsByTagName('RatingRightAtt')[0] / 4 + 0.75,
-			xml.getElementsByTagName('RatingIndirectSetPiecesDef')[0] / 4 + 0.75,
-			xml.getElementsByTagName('RatingIndirectSetPiecesAtt')[0] / 4 + 0.75,
+			xml.getElementsByTagName('RatingLeftDef')[0] / 4,
+			xml.getElementsByTagName('RatingMidDef')[0] / 4,
+			xml.getElementsByTagName('RatingRightDef')[0] / 4,
+			xml.getElementsByTagName('RatingMidfield')[0] / 4,
+			xml.getElementsByTagName('RatingLeftAtt')[0] / 4,
+			xml.getElementsByTagName('RatingMidAtt')[0] / 4,
+			xml.getElementsByTagName('RatingRightAtt')[0] / 4,
+			xml.getElementsByTagName('RatingIndirectSetPiecesDef')[0] / 4,
+			xml.getElementsByTagName('RatingIndirectSetPiecesAtt')[0] / 4,
 			0.25,
 			xml.getElementsByTagName('TacticType')[0],
 			xml.getElementsByTagName('TacticSkill')[0],
+		);
+	}
+
+	function _getJsonRatings(ratings, tacticType, tacticSkill) {
+		return new IMP.ratings(
+			ratings.averageLeftDef / 4,
+			ratings.averageMidDef / 4,
+			ratings.averageRightDef / 4,
+			ratings.averageMidfield / 4,
+			ratings.averageLeftAtt / 4,
+			ratings.averageMidAtt / 4,
+			ratings.averageRightAtt / 4,
+			ratings.averageIndirectFreeKickDef / 4,
+			ratings.averageIndirectFreeKickAtt / 4,
+			0.25,
+			tacticType,
+			tacticSkill
 		);
 	}
 
@@ -145,22 +162,39 @@ IMP.form = (function() {
 			_updateLiveProbabilities(_formSide.away, _formSide.home);
 		},
 
-		importMatchRatings: function(pushState = true) {
+		importMatchRatings: function(pushState = true, fallback = false) {
 			let matchForm = document.getElementById('match_id');
 			let matchId = Number(matchForm.value);
-			let path = '/match?id=' + matchId;
+			let path = `/match${fallback ? '_scrape' : ''}?matchid=${matchId}`;
 			let request = new XMLHttpRequest();
 			request.open('GET', path, true);
 			request.onload = () => {
 				if (request.status == 200) {
 					matchForm.classList.remove('is-invalid');
-					let xml = request.responseXML;
-					_setRatings(_formSide.home, _getXmlRatings(xml.getElementsByTagName('HomeTeam')[0]));
-					_setRatings(_formSide.away, _getXmlRatings(xml.getElementsByTagName('AwayTeam')[0]));
+					let homeName, awayName;
+					if (!fallback) {
+						let xml = request.responseXML;
+						_setRatings(_formSide.home, _getXmlRatings(xml.getElementsByTagName('HomeTeam')[0]));
+						_setRatings(_formSide.away, _getXmlRatings(xml.getElementsByTagName('AwayTeam')[0]));
+						homeName = xml.getElementsByTagName('HomeTeamName')[0];
+						awayName = xml.getElementsByTagName('AwayTeamName')[0];
+					} else {
+						let json = JSON.parse(request.response);
+						_setRatings(_formSide.home, _getJsonRatings(
+							json.ratings.filter(x => x.teamId == json.homeTeamIdDB)[0],
+							json.homeTacticType,
+							json.homeTacticSkill
+						));
+						_setRatings(_formSide.away, _getJsonRatings(
+							json.ratings.filter(x => x.teamId == json.awayTeamIdDB)[0],
+							json.awayTacticType,
+							json.awayTacticSkill
+						));
+						homeName = json.homeTeamName;
+						awayName = json.awayTeamName;
+					}
 					IMP.form.updateLiveProbabilities();
-					IMP.form.printPrediction();
-					let homeName = xml.getElementsByTagName('HomeTeamName')[0];
-					let awayName = xml.getElementsByTagName('AwayTeamName')[0];
+					IMP.prediction.printPrediction();
 					document.title = `${homeName.slice(0, 8).trim()} - ${awayName.slice(0, 8).trim()} · IMP`;
 					document.getElementById('home_name').textContent = homeName;
 					document.getElementById('away_name').textContent = awayName;

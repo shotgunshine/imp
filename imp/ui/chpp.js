@@ -16,24 +16,45 @@ IMP.chpp = (function() {
 			xml.getElementsByTagName('RatingIndirectSetPiecesAtt')[0] / 4,
 			0.25,
 			xml.getElementsByTagName('TacticType')[0],
-			xml.getElementsByTagName('TacticSkill')[0],
+			xml.getElementsByTagName('TacticSkill')[0]
 		);
 	}
 
-	function _getJsonRatings(ratings, tacticType, tacticSkill) {
+	function _getJsonRatingsHome(json) {
+		let ratings = json.ratings.filter(x => x.teamId == json.homeTeamIdDB)[0];
+		let timeline = json.analysis.timeline.filter(x => x.minute < 5).at(-1);
 		return new IMP.ratings(
-			ratings.averageLeftDef / 4,
-			ratings.averageMidDef / 4,
-			ratings.averageRightDef / 4,
-			ratings.averageMidfield / 4,
-			ratings.averageLeftAtt / 4,
-			ratings.averageMidAtt / 4,
-			ratings.averageRightAtt / 4,
+			timeline.ratings.sectors[2].homeRating / 4,
+			timeline.ratings.sectors[1].homeRating / 4,
+			timeline.ratings.sectors[0].homeRating / 4,
+			timeline.ratings.sectors[3].homeRating / 4,
+			timeline.ratings.sectors[6].homeRating / 4,
+			timeline.ratings.sectors[5].homeRating / 4,
+			timeline.ratings.sectors[4].homeRating / 4,
 			ratings.averageIndirectFreeKickDef / 4,
 			ratings.averageIndirectFreeKickAtt / 4,
 			0.25,
-			tacticType,
-			tacticSkill
+			json.homeTacticType,
+			json.homeTacticSkill
+		);
+	}
+
+	function _getJsonRatingsAway(json) {
+		let ratings = json.ratings.filter(x => x.teamId == json.awayTeamIdDB)[0];
+		let timeline = json.analysis.timeline.filter(x => x.minute < 5).at(-1);
+		return new IMP.ratings(
+			timeline.ratings.sectors[4].awayRating / 4,
+			timeline.ratings.sectors[5].awayRating / 4,
+			timeline.ratings.sectors[6].awayRating / 4,
+			timeline.ratings.sectors[3].awayRating / 4,
+			timeline.ratings.sectors[0].awayRating / 4,
+			timeline.ratings.sectors[1].awayRating / 4,
+			timeline.ratings.sectors[2].awayRating / 4,
+			ratings.averageIndirectFreeKickDef / 4,
+			ratings.averageIndirectFreeKickAtt / 4,
+			0.25,
+			json.awayTacticType,
+			json.awayTacticSkill
 		);
 	}
 
@@ -56,16 +77,8 @@ IMP.chpp = (function() {
 						awayName = xml.getElementsByTagName('AwayTeamName')[0];
 					} else {
 						let json = JSON.parse(request.response);
-						homeRatings = _getJsonRatings(
-							json.ratings.filter(x => x.teamId == json.homeTeamIdDB)[0],
-							json.homeTacticType,
-							json.homeTacticSkill
-						);
-						awayRatings = _getJsonRatings(
-							json.ratings.filter(x => x.teamId == json.awayTeamIdDB)[0],
-							json.awayTacticType,
-							json.awayTacticSkill
-						);
+						homeRatings = _getJsonRatingsHome(json);
+						awayRatings = _getJsonRatingsAway(json);
 						homeName = json.homeTeamName;
 						awayName = json.awayTeamName;
 					}

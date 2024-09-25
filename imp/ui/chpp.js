@@ -59,17 +59,18 @@ IMP.chpp = (function() {
 	}
 
 	return {
-		importMatchRatings: function(pushState = true, fallback = false) {
+		importMatchRatings: function(options) {
 			let matchForm = document.getElementById('match_id');
 			let matchId = Number(matchForm.value);
-			let path = `/match${fallback ? '_scrape' : ''}?matchid=${matchId}`;
+			let timeline = options.timeline ?? true;
+			let path = `/match${timeline ? '_scrape' : ''}?matchid=${matchId}`;
 			let request = new XMLHttpRequest();
 			request.open('GET', path, true);
 			request.onload = () => {
 				if (request.status == 200) {
 					matchForm.classList.remove('is-invalid');
 					let homeRatings, awayRatings, homeName, awayName;
-					if (!fallback) {
+					if (!timeline) {
 						let xml = request.responseXML;
 						homeRatings = _getXmlRatings(xml.getElementsByTagName('HomeTeam')[0]);
 						awayRatings = _getXmlRatings(xml.getElementsByTagName('AwayTeam')[0]);
@@ -84,11 +85,12 @@ IMP.chpp = (function() {
 					}
 					IMP.form.setHomeRatings(homeRatings);
 					IMP.form.setAwayRatings(awayRatings);
-					IMP.prediction.printPrediction(false);
+					let showDiff = false;
+					IMP.prediction.printPrediction(showDiff);
 					document.title = `${homeName.slice(0, 8).trim()} - ${awayName.slice(0, 8).trim()} · IMP`;
 					document.getElementById('home_name').textContent = homeName;
 					document.getElementById('away_name').textContent = awayName;
-					if (pushState) history.pushState({}, null, `/m/${matchId}`);
+					if (options.pushState ?? true) history.pushState({}, null, `/m/${matchId}`);
 				} else {
 					matchForm.classList.add('is-invalid');
 				}

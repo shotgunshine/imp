@@ -294,7 +294,7 @@
 				let matchId = Number(document.location.pathname.split("/")[2]);
 				if (matchId) {
 					document.getElementById('match_id').value = matchId;
-					IMP.chpp.importMatchRatings(false);
+					IMP.chpp.importMatchRatings({pushState: true});
 				}
 			});
 		});

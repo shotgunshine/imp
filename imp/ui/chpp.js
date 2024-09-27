@@ -69,6 +69,8 @@ IMP.chpp = (function() {
 			request.onload = () => {
 				if (request.status == 200) {
 					matchForm.classList.remove('is-invalid');
+					document.getElementById('match_invalid').classList.add('d-none');
+					document.getElementById('match_sign').classList.add('d-none');
 					let homeRatings, awayRatings, homeName, awayName;
 					if (!timeline) {
 						let xml = request.responseXML;
@@ -91,7 +93,13 @@ IMP.chpp = (function() {
 					document.getElementById('home_name').textContent = homeName;
 					document.getElementById('away_name').textContent = awayName;
 					if (options.pushState ?? true) history.pushState({}, null, `/m/${matchId}`);
-				} else {
+				} else if (request.status == 404) {
+					document.getElementById('match_sign').classList.add('d-none');
+					document.getElementById('match_invalid').classList.remove('d-none');
+					matchForm.classList.add('is-invalid');
+				} else if (request.status == 401) {
+					document.getElementById('match_invalid').classList.add('d-none');
+					document.getElementById('match_sign').classList.remove('d-none');
 					matchForm.classList.add('is-invalid');
 				}
 			}

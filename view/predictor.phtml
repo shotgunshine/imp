@@ -245,8 +245,11 @@
 						class="btn btn-outline rounded-end" type="button"
 						onclick="IMP.chpp.importMatchRatings()"
 						>→</button>
-					<div class="invalid-feedback" style="position: absolute; top: 33px;">
+					<div class="invalid-feedback d-none" style="position: absolute; top: 33px;" id="match_invalid">
 						<?= getTranslation('predictorImportInvalid') ?>
+					</div>
+					<div class="invalid-feedback d-none" style="position: absolute; top: 33px;" id="match_sign">
+						<?= getTranslation('predictorImportSign') ?>
 					</div>
 				</div>
 			</div>
@@ -264,7 +267,7 @@
 		onclick="IMP.prediction.copyForumTable(this)"
 		title="<?= getTranslation('predictorCopyAlt') ?>"
 		><img src="/res/img/copy.svg" width=16></button>
-	<table class="table text-center" id="prediction">
+	<table class="table text-center" id="table_prediction">
 		<thead>
 			<tr>
 				<th width="33%" id="head1"><?= getTranslation('predictorHomeShort') ?></th>

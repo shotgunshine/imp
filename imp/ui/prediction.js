@@ -23,7 +23,7 @@ IMP.prediction = (function() {
 	}
 
 	function _forumTable() {
-		let table = document.getElementById('prediction').outerHTML;
+		let table = document.getElementById('table_prediction').outerHTML;
 		table = table.replaceAll(new RegExp([
 			'\n',
 			'\t',

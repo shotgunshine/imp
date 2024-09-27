@@ -26,15 +26,21 @@ function getMatch($matchId) {
 }
 
 function getMatchTimeline($matchId) {
-	$url = 'https://hattrick.org/Club/Matches/Match.aspx?matchID=' . strval($matchId) . '&SourceSystem=Hattrick';
-	preg_match('/window[.]HT[.]ngMatch[.]data = .*/', file_get_contents($url), $matches);
-	$data = json_decode(explode(' = ', $matches[0])[1]);
-
-	if ($data === null or ! $data->isFinished or $data->isWalkover) {
-		header('HTTP/1.0 404 Not found');
-	} else {
+	$cache = 'cache/' . $matchId . '.json';
+	if (file_exists($cache)) {
 		header('Cache-Control: public, max-age=31536000');
-		echo json_encode($data);
+		echo file_get_contents($cache);
+	} else {
+		$url = 'https://hattrick.org/Club/Matches/Match.aspx?matchID=' . strval($matchId) . '&SourceSystem=Hattrick';
+		preg_match('/window[.]HT[.]ngMatch[.]data = .*/', file_get_contents($url), $matches);
+		$data = json_decode(explode(' = ', $matches[0])[1]);
+		if ($data === null or ! $data->isFinished or $data->isWalkover) {
+			header('HTTP/1.0 404 Not found');
+		} else {
+			header('Cache-Control: public, max-age=31536000');
+			file_put_contents($cache, json_encode($data));
+			echo json_encode($data);
+		}
 	}
 }
 

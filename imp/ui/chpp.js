@@ -3,23 +3,6 @@ var IMP = IMP || {};
 IMP.chpp = (function() {
 	'use strict';
 
-	function _getXmlRatings(xml) {
-		return new IMP.ratings(
-			xml.getElementsByTagName('RatingLeftDef')[0] / 4,
-			xml.getElementsByTagName('RatingMidDef')[0] / 4,
-			xml.getElementsByTagName('RatingRightDef')[0] / 4,
-			xml.getElementsByTagName('RatingMidfield')[0] / 4,
-			xml.getElementsByTagName('RatingLeftAtt')[0] / 4,
-			xml.getElementsByTagName('RatingMidAtt')[0] / 4,
-			xml.getElementsByTagName('RatingRightAtt')[0] / 4,
-			xml.getElementsByTagName('RatingIndirectSetPiecesDef')[0] / 4,
-			xml.getElementsByTagName('RatingIndirectSetPiecesAtt')[0] / 4,
-			0.25,
-			xml.getElementsByTagName('TacticType')[0],
-			xml.getElementsByTagName('TacticSkill')[0]
-		);
-	}
-
 	function _getJsonRatingsHome(json) {
 		let ratings = json.ratings.filter(x => x.teamId == json.homeTeamIdDB)[0];
 		let timeline = json.analysis.timeline.filter(x => x.minute < 5).at(-1);
@@ -62,8 +45,7 @@ IMP.chpp = (function() {
 		importMatchRatings: function(options = {}) {
 			let matchForm = document.getElementById('match_id');
 			let matchId = Number(matchForm.value);
-			let timeline = options.timeline ?? true;
-			let path = `/match?match_id=${matchId}&timeline=${timeline}`;
+			let path = `/match?match_id=${matchId}&timeline=true`;
 			let request = new XMLHttpRequest();
 			request.open('GET', path, true);
 			request.onload = () => {
@@ -71,24 +53,12 @@ IMP.chpp = (function() {
 					matchForm.classList.remove('is-invalid');
 					document.getElementById('match_invalid').classList.add('d-none');
 					document.getElementById('match_sign').classList.add('d-none');
-					let homeRatings, awayRatings, homeName, awayName;
-					if (!timeline) {
-						let xml = request.responseXML;
-						homeRatings = _getXmlRatings(xml.getElementsByTagName('HomeTeam')[0]);
-						awayRatings = _getXmlRatings(xml.getElementsByTagName('AwayTeam')[0]);
-						homeName = xml.getElementsByTagName('HomeTeamName')[0];
-						awayName = xml.getElementsByTagName('AwayTeamName')[0];
-					} else {
-						let json = JSON.parse(request.response);
-						homeRatings = _getJsonRatingsHome(json);
-						awayRatings = _getJsonRatingsAway(json);
-						homeName = json.homeTeamName;
-						awayName = json.awayTeamName;
-					}
-					IMP.form.setHomeRatings(homeRatings);
-					IMP.form.setAwayRatings(awayRatings);
-					let showDiff = false;
-					IMP.prediction.printPrediction(showDiff);
+					let json = JSON.parse(request.response);
+					let homeName = json.homeTeamName;
+					let awayName = json.awayTeamName;
+					IMP.form.setHomeRatings(_getJsonRatingsHome(json));
+					IMP.form.setAwayRatings(_getJsonRatingsAway(json));
+					IMP.prediction.printPrediction(false);
 					document.title = `${homeName.slice(0, 8).trim()} - ${awayName.slice(0, 8).trim()} · IMP`;
 					document.getElementById('home_name').textContent = homeName;
 					document.getElementById('away_name').textContent = awayName;
@@ -106,28 +76,18 @@ IMP.chpp = (function() {
 			request.send();
 		},
 
-		saveMatchRatings: function(matchId, isHome, options = {}) {
-			let timeline = options.timeline ?? true;
-			let path = `/match?match_id=${matchId}&timeline=${timeline}`;
+		saveMatchRatings: function(matchId, isHome) {
+			let path = `/match?match_id=${matchId}&timeline=true`;
 			let request = new XMLHttpRequest();
 			request.open('GET', path, true);
 			request.onload = () => {
 				if (request.status == 200) {
 					let ratings;
-					if (!timeline) {
-						let xml = request.responseXML;
-						if (isHome) {
-							ratings = _getXmlRatings(xml.getElementsByTagName('HomeTeam')[0]);
-						} else {
-							ratings = _getXmlRatings(xml.getElementsByTagName('AwayTeam')[0]);
-						}
+					let json = JSON.parse(request.response);
+					if (isHome) {
+						ratings = _getJsonRatingsHome(json);
 					} else {
-						let json = JSON.parse(request.response);
-						if (isHome) {
-							ratings = _getJsonRatingsHome(json);
-						} else {
-							ratings = _getJsonRatingsAway(json);
-						}
+						ratings = _getJsonRatingsAway(json);
 					}
 					let a = document.createElement('a');
 					a.href = 'data:text/json;charset=utf-8,' + JSON.stringify(ratings);
@@ -136,6 +96,55 @@ IMP.chpp = (function() {
 				}
 			}
 			request.send();
+		},
+
+		importMatchesRatings: function() {
+			let tactics = ['', 'Press', 'CA', 'AIM', 'AOW', '', '', 'PC', 'LS']; // to-do: localize
+			for (let tr of document.querySelectorAll('#matches > tbody > tr')) {
+				let matchId = tr.getAttribute('match-id');
+				let path = `/match?match_id=${matchId}&timeline=true`;
+				let request = new XMLHttpRequest();
+				request.open('GET', path, true);
+				request.onload = () => {
+					if (request.status == 200) {
+						let json = JSON.parse(request.response);
+						let lineups = json.events.filter(x => x.eventType == 23 || x.eventType == 24);
+						lineups = lineups[0].eventText.match(/[0-9]-[0-9]-[0-9]/g);
+						let ratings, tactic, tacticLevel;
+						if (tr.getAttribute('is-home') === 'true') {
+							ratings = _getJsonRatingsHome(json);
+							tactic = json.homeTacticType;
+							tacticLevel = json.homeTacticSkill;
+							tr.children[4].innerHTML = lineups[0];
+						} else {
+							ratings = _getJsonRatingsAway(json);
+							tactic = json.awayTacticType;
+							tacticLevel = json.awayTacticSkill;
+							tr.children[4].innerHTML = lineups[1] ?? lineups[0];
+							if (json.events.filter(x => x.eventType == 25).length > 0) {
+								tr.children[2].innerHTML = 'Derby'; // to-do: localize
+							}
+						}
+						if (json.events.filter(x => x.eventType == 26).length > 0) {
+							tr.children[2].innerHTML = 'Neutral'; // to-do: localize
+						}
+						if (tactic > 0) {
+							tr.children[4].innerHTML += `<br>${tactics[tactic]}&nbsp(${tacticLevel})`;
+						}
+						tr.children[5].innerHTML = `
+							<table class="table table-sm table-bordered text-center m-0">
+							<tr><td>${(ratings.rightDefense + 0.75).toFixed(2)}</td>
+							<td>${(ratings.centralDefense + 0.75).toFixed(2)}</td>
+							<td>${(ratings.leftDefense + 0.75).toFixed(2)}</td></tr>
+							<tr><td colspan="3">${(ratings.midfield + 0.75).toFixed(2)}</td></tr>
+							<tr><td>${(ratings.rightAttack + 0.75).toFixed(2)}</td>
+							<td>${(ratings.centralAttack + 0.75).toFixed(2)}</td>
+							<td>${(ratings.leftAttack + 0.75).toFixed(2)}</td></tr>
+						`;
+					}
+				}
+				request.send();
+			}
 		}
 	};
 })();

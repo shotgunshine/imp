@@ -1,5 +1,3 @@
-<h3><?= $title ?></h3>
-<table class="table">
 <?php
 const matchTypeIcons = [
 	100 => 'medal',
@@ -15,6 +13,11 @@ const matchTypeIcons = [
 	800 => 'flag',
 	900 => 'flag'
 ];
+?>
+<h3><?= $title ?></h3>
+<div class="table-responsive">
+	<table class="table align-middle" id="matches">
+<?php
 foreach($matches->Team->MatchList->children() as $m) {
 	if ($m->SourceSystem == 'Hattrick' and $m->Status == 'FINISHED') {
 		if ($m->HomeTeam->HomeTeamName->__toString() == $title) {
@@ -23,50 +26,52 @@ foreach($matches->Team->MatchList->children() as $m) {
 			$oppId = $m->AwayTeam->AwayTeamID;
 			$isHome = 'true';
 		} else {
-			$ground = getTranslation('predictorAwayShort'); // TO-DO: check derby and neutral
+			$ground = getTranslation('predictorAwayShort');
 			$oppName = $m->HomeTeam->HomeTeamName;
 			$oppId = $m->HomeTeam->HomeTeamID;
 			$isHome = 'false';
 		}
 		$matchType = $m->MatchType . $m->CupLevel . $m->CupLevelIndex;
-		echo '<tr>
-			<td class="text-nowrap">' . date_create($m->MatchDate)->format('j/n') . '</td>
+		echo '<tr match-id="' . $m->MatchID . '" is-home="' . $isHome . '">
+			<td class="text-center">' . date_create($m->MatchDate)->format('j/n') . '</td>
 			<td title="' . getTranslation('teamMatchType' . $matchType) . '">
 				<img src="/res/img/match/' . matchTypeIcons[$matchType] . '.svg" width="16">
 			</td>
-			<td>' . $ground . '</td>
+			<td class="text-center">' . $ground . '</td>
 			<td width="99%">' . $oppName . '</td>
+			<td class="text-center"></td>
+			<td class="text-center"></td>
 			<td>
-				<img src="/res/img/save.svg" width="24" role="button"
-				title="' . getTranslation('teamSaveAlt') . '"
-				onclick="IMP.chpp.saveMatchRatings(' . $m->MatchID . ', ' . $isHome . ')">
+				<button class="btn btn-inverted p-2"
+					title="' . getTranslation('teamSaveAlt') . '"
+					onclick="IMP.chpp.saveMatchRatings(' . $m->MatchID . ', ' . $isHome . ')">
+					<img src="/res/img/save.svg" width="24">
+				</button>
 			</td>
 		</tr>';
 	}
 }
 ?>
-</table>
+	</table>
+</div>
 <h3><?= getTranslation('teamNextMatches'); ?></h3>
 <table class="table">
 <?php
 foreach($matches->Team->MatchList->children() as $m) {
 	if ($m->SourceSystem == 'Hattrick' and $m->Status == 'UPCOMING') {
 		if ($m->HomeTeam->HomeTeamName->__toString() == $title) {
-			$ground = getTranslation('predictorHomeShort');
 			$oppName = $m->AwayTeam->AwayTeamName;
 			$oppId = $m->AwayTeam->AwayTeamID;
 		} else {
-			$ground = getTranslation('predictorAwayShort');
 			$oppName = $m->HomeTeam->HomeTeamName;
 			$oppId = $m->HomeTeam->HomeTeamID;
 		}
 		$matchType = $m->MatchType . $m->CupLevel . $m->CupLevelIndex;
 		echo '<tr>
-			<td class="text-nowrap">' . date_create($m->MatchDate)->format('j/n') . '</td>
+			<td class="text-center">' . date_create($m->MatchDate)->format('j/n') . '</td>
 			<td title="' . getTranslation('teamMatchType' . $matchType) . '">
 				<img src="/res/img/match/' . matchTypeIcons[$matchType] . '.svg" width="16">
 			</td>
-			<td>' . $ground . '</td>
 			<td width="99%"><a href="/team/' . $oppId . '">' . $oppName . '</a></td>
 		</tr>';
 	}
@@ -79,3 +84,6 @@ foreach($matches->Team->MatchList->children() as $m) {
 	<button class="btn btn-outline rounded-end" type="button"
 	onclick="window.location = '/team/' + document.querySelector('[name=team_id]').value">→</button>
 </div></div>
+<script type="text/javascript">
+	document.onload = IMP.chpp.importMatchesRatings();
+</script>

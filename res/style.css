@@ -20,6 +20,11 @@ label, #copyForumBtn, #doubleHeader, #gradient td {
 	background-size: 100% 100%;
 }
 
+.table-sm td {
+	padding: 0 0.25rem;
+	font-size: 0.75rem;
+}
+
 html[data-bs-theme="light"] .btn-regular,
 html[data-bs-theme="dark"] .btn-inverted {
 	--bs-btn-color: #fff;

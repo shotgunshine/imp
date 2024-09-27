@@ -17,7 +17,7 @@ const matchTypeIcons = [
 ];
 foreach($matches->Team->MatchList->children() as $m) {
 	if ($m->SourceSystem == 'Hattrick' and $m->Status == 'FINISHED') {
-		if ($m->HomeTeam->HomeTeamName->__toString() == $title->__toString()) {
+		if ($m->HomeTeam->HomeTeamName->__toString() == $title) {
 			$ground = getTranslation('predictorHomeShort');
 			$oppName = $m->AwayTeam->AwayTeamName;
 			$oppId = $m->AwayTeam->AwayTeamID;
@@ -51,7 +51,7 @@ foreach($matches->Team->MatchList->children() as $m) {
 <?php
 foreach($matches->Team->MatchList->children() as $m) {
 	if ($m->SourceSystem == 'Hattrick' and $m->Status == 'UPCOMING') {
-		if ($m->HomeTeam->HomeTeamName->__toString() == $title->__toString()) {
+		if ($m->HomeTeam->HomeTeamName->__toString() == $title) {
 			$ground = getTranslation('predictorHomeShort');
 			$oppName = $m->AwayTeam->AwayTeamName;
 			$oppId = $m->AwayTeam->AwayTeamID;

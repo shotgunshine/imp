@@ -24,7 +24,7 @@
 	/>
 	<path
 		class="imp"
-		d="M4.5 1.5 v-1 h7 v1"
+		d="M4.5 0.5 h7 v1 q-3.5 -1.5 -7 0 z"
 		stroke-linecap="round"
 		stroke-linejoin="round"
 		stroke-width="1"

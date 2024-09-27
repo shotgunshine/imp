@@ -19,19 +19,25 @@ if ($uri[1] == '' or $uri[1] == 'm') {
 
 elseif ($uri[1] == 'team') {
 	if (isset($_SESSION['accessToken'])) {
-		if (isset($_POST['team_id'])) {
-			$teamId = intval($_POST['team_id']);
-		} elseif (isset($uri[2])) {
+		if (isset($uri[2])) {
 			$teamId = intval($uri[2]);
 		} else {
 			$teamId = '';
 		}
 		$matches = new SimpleXMLElement(file_get_contents('/matches?team_id=' . $teamId));
-		$title = $matches->Team->TeamName;
-		require 'lang/lang.php';
-		require 'view/head.phtml';
-		require 'view/team.phtml';
-		require 'view/foot.phtml';
+		if ($matches->Team->MatchList->children()) {
+			require 'lang/lang.php';
+			$title = htmlspecialchars($matches->Team->TeamName);
+			require 'view/head.phtml';
+			require 'view/team.phtml';
+			require 'view/foot.phtml';
+		} else {
+			if ($teamId === '') {
+				header('Location: /logout', true, 302);
+			} else {
+				header('Location: /team', true, 302);
+			}
+		}
 	} else {
 		header('Location: /', true, 302);
 	}

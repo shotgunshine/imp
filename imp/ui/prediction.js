@@ -23,27 +23,23 @@ IMP.prediction = (function() {
 	}
 
 	function _forumTable() {
-		let forumTable = '[table][tr][th align=center]Home[/th][th align=center]Draw[/th]';
-		forumTable += '[th align=center]Away[/th][/tr][tr][td align=center]';
-		forumTable += Number(document.getElementById('pred1').getAttribute('data')).toFixed(1);
-		forumTable += '%[/td][td align=center]';
-		forumTable += Number(document.getElementById('predx').getAttribute('data')).toFixed(1);
-		forumTable += '%[/td][td align=center]';
-		forumTable += Number(document.getElementById('pred2').getAttribute('data')).toFixed(1);
-		forumTable += '%[/td][/tr][tr][td align=center]';
-		forumTable += Number(document.getElementById('goal1').getAttribute('data')).toFixed(2);
-		forumTable += '[/td][td align=center][b]Goals[/b][/td][td align=center]';
-		forumTable += Number(document.getElementById('goal2').getAttribute('data')).toFixed(2);
-		forumTable += '[/td][/tr][tr][td align=center]';
-		forumTable += Number(document.getElementById('chan1').getAttribute('data')).toFixed(2);
-		forumTable += '[/td][td align=center][b]Chances[/b][/td][td align=center]';
-		forumTable += Number(document.getElementById('chan2').getAttribute('data')).toFixed(2);
-		forumTable += '[/td][/tr][tr][td align=center]';
-		forumTable += Number(document.getElementById('scor1').getAttribute('data')).toFixed(1);
-		forumTable += '%[/td][td align=center][b]Scoring[/b][/td][td align=center]';
-		forumTable += Number(document.getElementById('scor2').getAttribute('data')).toFixed(1);
-		forumTable += '%[/td][/tr][/table]';
-		return forumTable;
+		let table = document.getElementById('prediction').outerHTML;
+		table = table.replaceAll(new RegExp([
+			'\n',
+			'\t',
+			'</?thead>',
+			'</?tbody>',
+			' id="[A-z0-9 -]+"',
+			' class="[A-z -]+"',
+			' data="[0-9]+([.][0-9]+)?"',
+			' [(][+]?[-]?[0-9]+([.][0-9]+)?[)]',
+			' width="..."'
+		].join('|'), 'gi'), '');
+		table = table.replaceAll('<', '[');
+		table = table.replaceAll('>', ']');
+		table = table.replaceAll('[td]', '[td align=center]');
+		table = table.replaceAll('[th]', '[th align=center]');
+		return table;
 	}
 
 	function _gradientTable(prediction, rows, cols) {

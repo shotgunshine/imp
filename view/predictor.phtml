@@ -260,11 +260,11 @@
 	<h3><?= getTranslation('predictorPrediction') ?></h3>
 	<button
 		id="copyForumBtn"
-		class="btn btn-inverted position-absolute p-1 my-1"
+		class="btn btn-inverted position-absolute p-2"
 		onclick="IMP.prediction.copyForumTable(this)"
 		title="<?= getTranslation('predictorCopyAlt') ?>"
 		><img src="/res/img/copy.svg" width=16></button>
-	<table class="table text-center">
+	<table class="table text-center" id="prediction">
 		<thead>
 			<tr>
 				<th width="33%" id="head1"><?= getTranslation('predictorHomeShort') ?></th>

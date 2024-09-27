@@ -1,0 +1,81 @@
+<h3><?= $title ?></h3>
+<table class="table">
+<?php
+const matchTypeIcons = [
+	100 => 'medal',
+	200 => 'medal',
+	311 => 'cup',
+	321 => 'cup_hollow',
+	322 => 'cup_hollow',
+	323 => 'cup_hollow',
+	331 => 'cup_hollow',
+	400 => 'flag',
+	500 => 'flag',
+	700 => 'cup',
+	800 => 'flag',
+	900 => 'flag'
+];
+foreach($matches->Team->MatchList->children() as $m) {
+	if ($m->SourceSystem == 'Hattrick' and $m->Status == 'FINISHED') {
+		if ($m->HomeTeam->HomeTeamName->__toString() == $title->__toString()) {
+			$ground = getTranslation('predictorHomeShort');
+			$oppName = $m->AwayTeam->AwayTeamName;
+			$oppId = $m->AwayTeam->AwayTeamID;
+			$isHome = 'true';
+		} else {
+			$ground = getTranslation('predictorAwayShort'); // TO-DO: check derby and neutral
+			$oppName = $m->HomeTeam->HomeTeamName;
+			$oppId = $m->HomeTeam->HomeTeamID;
+			$isHome = 'false';
+		}
+		$matchType = $m->MatchType . $m->CupLevel . $m->CupLevelIndex;
+		echo '<tr>
+			<td class="text-nowrap">' . date_create($m->MatchDate)->format('j/n') . '</td>
+			<td title="' . getTranslation('teamMatchType' . $matchType) . '">
+				<img src="/res/img/match/' . matchTypeIcons[$matchType] . '.svg" width="16">
+			</td>
+			<td>' . $ground . '</td>
+			<td width="99%">' . $oppName . '</td>
+			<td>
+				<img src="/res/img/save.svg" width="24" role="button"
+				title="' . getTranslation('teamSaveAlt') . '"
+				onclick="IMP.chpp.saveMatchRatings(' . $m->MatchID . ', ' . $isHome . ')">
+			</td>
+		</tr>';
+	}
+}
+?>
+</table>
+<h3><?= getTranslation('teamNextMatches'); ?></h3>
+<table class="table">
+<?php
+foreach($matches->Team->MatchList->children() as $m) {
+	if ($m->SourceSystem == 'Hattrick' and $m->Status == 'UPCOMING') {
+		if ($m->HomeTeam->HomeTeamName->__toString() == $title->__toString()) {
+			$ground = getTranslation('predictorHomeShort');
+			$oppName = $m->AwayTeam->AwayTeamName;
+			$oppId = $m->AwayTeam->AwayTeamID;
+		} else {
+			$ground = getTranslation('predictorAwayShort');
+			$oppName = $m->HomeTeam->HomeTeamName;
+			$oppId = $m->HomeTeam->HomeTeamID;
+		}
+		$matchType = $m->MatchType . $m->CupLevel . $m->CupLevelIndex;
+		echo '<tr>
+			<td class="text-nowrap">' . date_create($m->MatchDate)->format('j/n') . '</td>
+			<td title="' . getTranslation('teamMatchType' . $matchType) . '">
+				<img src="/res/img/match/' . matchTypeIcons[$matchType] . '.svg" width="16">
+			</td>
+			<td>' . $ground . '</td>
+			<td width="99%"><a href="/team/' . $oppId . '">' . $oppName . '</a></td>
+		</tr>';
+	}
+}
+?>
+</table>
+<div class="float-md-start"><div class="input-group">
+	<input type="text" class="form-control" name="team_id" placeholder="TeamID"
+	onkeyup="if (event.key == 'Enter') window.location = '/team/' + this.value">
+	<button class="btn btn-outline rounded-end" type="button"
+	onclick="window.location = '/team/' + document.querySelector('[name=team_id]').value">→</button>
+</div></div>

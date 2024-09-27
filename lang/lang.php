@@ -1,21 +1,24 @@
 <?php
 const languages = [
-	['id' => 0, 'file' => 'en.php', 'name' => 'English'],
-	['id' => 1, 'file' => 'it.php', 'name' => 'Italiano']
+	'en' => ['file' => 'en.php', 'name' => 'English'],
+	'it' => ['file' => 'it.php', 'name' => 'Italiano']
 ];
 
 if (isset($_POST['language_id'])) {
-	$selectedLanguage = intval($_POST['language_id']);
+	$selectedLanguage = htmlspecialchars($_POST['language_id']);
 	if (array_key_exists($selectedLanguage, languages)) {
 		$_SESSION['languageId'] = $selectedLanguage;
 	}
 }
-$defaultLanguage = require 'en.php';
+
 if (!isset($_SESSION['languageId'])) {
-	$accept = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
-	if ($accept == 'en') $_SESSION['languageId'] = 0;
-	if ($accept == 'it') $_SESSION['languageId'] = 1;
+	$acceptedLanguage = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+	if (array_key_exists($acceptedLanguage, languages)) {
+		$_SESSION['languageId'] = $acceptedLanguage;
+	}
 }
+
+$defaultLanguage = require 'en.php';
 if (isset($_SESSION['languageId'])) {
 	$currentLanguage = require languages[$_SESSION['languageId']]['file'];
 }

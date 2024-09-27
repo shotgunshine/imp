@@ -8,11 +8,11 @@
 			<form class="d-flex" method="post">
 				<select class="form-select text-muted" name="language_id" onchange="this.form.submit()">
 <?php
-$selected = $_SESSION['languageId'] ?? 0;
-foreach (languages as $l) {
-	echo '<option value="' . $l['id'] . '"';
-	if ($selected == $l['id']) echo ' selected';
-	echo '>' . $l['name'] . '</option>';
+$selected = $_SESSION['languageId'] ?? 'en';
+foreach (languages as $l => $language) {
+	echo '<option value="' . $l . '"';
+	if ($selected == $l) echo ' selected';
+	echo '>' . $language['name'] . '</option>';
 }
 ?>
 				</select>

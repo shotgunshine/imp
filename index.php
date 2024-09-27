@@ -6,22 +6,29 @@ session_start([
 	'cookie_samesite' => 'Strict',
 ]);
 
-require 'lang/lang.php';
-
 error_reporting(E_ALL);
 
 $uri = explode('/', parse_url($_SERVER['REQUEST_URI'])['path']);
 
 if ($uri[1] == '' or $uri[1] == 'm') {
+	require 'lang/lang.php';
 	require 'view/head.phtml';
 	require 'view/predictor.phtml';
 	require 'view/foot.phtml';
 }
 
-elseif ($uri[1] == 'myteam') {
+elseif ($uri[1] == 'team') {
 	if (isset($_SESSION['accessToken'])) {
-		require 'chpp/auth.php';
-		$title = 'My Team';
+		if (isset($_POST['team_id'])) {
+			$teamId = intval($_POST['team_id']);
+		} elseif (isset($uri[2])) {
+			$teamId = intval($uri[2]);
+		} else {
+			$teamId = '';
+		}
+		$matches = new SimpleXMLElement(file_get_contents('/matches?team_id=' . $teamId));
+		$title = $matches->Team->TeamName;
+		require 'lang/lang.php';
 		require 'view/head.phtml';
 		require 'view/team.phtml';
 		require 'view/foot.phtml';
@@ -40,6 +47,7 @@ elseif ($uri[1] == 'login') {
 		$path .= '&oauth_callback=https://' . $_SERVER['SERVER_NAME'] . '/request_token_ready';
 		header('Location: ' . $path, true, 302);
 	} else {
+		require 'lang/lang.php';
 		$title = getTranslation('errorChppTitle');
 		require 'view/head.phtml';
 		$error = getTranslation('errorChppMessage');
@@ -72,19 +80,28 @@ elseif ($uri[1] == 'logout') {
 elseif ($uri[1] == 'match') {
 	if (isset($_SESSION['accessToken'])) {
 		require 'chpp/match.php';
-		getMatch(intval($_GET['matchid']));
+		if (boolval($_GET['timeline'])) {
+			getMatchTimeline(intval($_GET['match_id']));
+		} else {
+			getMatch(intval($_GET['match_id']));
+		}
 	} else {
 		header('HTTP/1.0 401 Unauthorized');
 	}
 }
 
-elseif ($uri[1] == 'match_scrape') {
-	require 'chpp/match.php';
-	scrapeMatch(intval($_GET['matchid']));
+elseif ($uri[1] == 'matches') {
+	if (isset($_SESSION['accessToken'])) {
+		require 'chpp/match.php';
+		getMatches(intval($_GET['team_id']));
+	} else {
+		header('HTTP/1.0 401 Unauthorized');
+	}
 }
 
 else {
 	header('HTTP/1.0 404 Not found');
+	require 'lang/lang.php';
 	$title = getTranslation('errorNotFoundTitle');
 	require 'view/head.phtml';
 	$error = getTranslation('errorNotFoundMessage');

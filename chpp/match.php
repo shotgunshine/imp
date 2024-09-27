@@ -1,13 +1,13 @@
 <?php
 require 'auth.php';
 
-function getMatch($matchId, $sourceSystem = 'hattrick', $matchEvents = false) {
+function getMatch($matchId) {
 	$params = [
 		'file' => 'matchdetails',
 		'version' => '3.1',
-		'matchEvents' => $matchEvents,
-		'matchID' => $matchId,
-		'sourceSystem' => $sourceSystem,
+		'matchEvents' => 'false',
+		'matchID' => strval($matchId),
+		'sourceSystem' => 'hattrick'
 	];
 
 	$match = accessProtectedResource(
@@ -25,8 +25,8 @@ function getMatch($matchId, $sourceSystem = 'hattrick', $matchEvents = false) {
 	}
 }
 
-function scrapeMatch($matchId, $sourceSystem = 'Hattrick') {
-	$url = 'https://hattrick.org/Club/Matches/Match.aspx?matchID=' . $matchId . '&SourceSystem=' . $sourceSystem;
+function getMatchTimeline($matchId) {
+	$url = 'https://hattrick.org/Club/Matches/Match.aspx?matchID=' . strval($matchId) . '&SourceSystem=Hattrick';
 	preg_match('/window[.]HT[.]ngMatch[.]data = .*/', file_get_contents($url), $matches);
 	$data = json_decode(explode(' = ', $matches[0])[1]);
 
@@ -35,5 +35,26 @@ function scrapeMatch($matchId, $sourceSystem = 'Hattrick') {
 	} else {
 		header('Cache-Control: public, max-age=31536000');
 		echo json_encode($data);
+	}
+}
+
+function getMatches($teamId) {
+	$params = [
+		'file' => 'matches',
+		'version' => '2.9',
+		'teamID' => strval($teamId)
+	];
+
+	$matches = accessProtectedResource(
+		$params,
+		$_SESSION['requestToken'],
+		$_SESSION['requestSecret']
+	);
+
+	$xml = new SimpleXMLElement($matches);
+	if ($xml->Team->MatchList->children()) {
+		echo $matches;
+	} else {
+		header('HTTP/1.0 404 Not found');
 	}
 }

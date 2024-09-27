@@ -1,0 +1,32 @@
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+	<defs>
+		<style>
+			.imp {
+				stroke: #212529;
+				fill: #212529;
+			}
+			@media (prefers-color-scheme: dark) {
+				.imp {
+					stroke: #dee2e6;
+					fill: #dee2e6;
+				}
+			}
+		</style>
+	</defs>
+	<circle
+		class="imp"
+		cx="8"
+		cy="9"
+		r="6.5"
+		stroke-linecap="round"
+		stroke-linejoin="round"
+		stroke-width="1"
+	/>
+	<path
+		class="imp"
+		d="M4.5 1.5 v-1 h7 v1"
+		stroke-linecap="round"
+		stroke-linejoin="round"
+		stroke-width="1"
+	/>
+</svg>

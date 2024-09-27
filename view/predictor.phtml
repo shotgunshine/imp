@@ -238,10 +238,12 @@
 					onclick="IMP.form.flipAwayRatings()"
 					><?= getTranslation('predictorFlip') ?></button>
 				<div class="input-group ms-2">
-					<input type="text" class="form-control" id="match_id" placeholder="MatchID">
+					<input
+						type="text" class="form-control" id="match_id" placeholder="MatchID"
+						onkeyup="if (event.key == 'Enter') IMP.chpp.importMatchRatings()">
 					<button
-						class="btn btn-outline rounded-end"
-						type="button" onclick="IMP.chpp.importMatchRatings()"
+						class="btn btn-outline rounded-end" type="button"
+						onclick="IMP.chpp.importMatchRatings()"
 						>→</button>
 					<div class="invalid-feedback" style="position: absolute; top: 33px;">
 						<?= getTranslation('predictorImportInvalid') ?>

@@ -59,11 +59,11 @@ IMP.chpp = (function() {
 	}
 
 	return {
-		importMatchRatings: function(options) {
+		importMatchRatings: function(options = {}) {
 			let matchForm = document.getElementById('match_id');
 			let matchId = Number(matchForm.value);
 			let timeline = options.timeline ?? true;
-			let path = `/match${timeline ? '_scrape' : ''}?matchid=${matchId}`;
+			let path = `/match?match_id=${matchId}&timeline=${timeline}`;
 			let request = new XMLHttpRequest();
 			request.open('GET', path, true);
 			request.onload = () => {
@@ -93,6 +93,38 @@ IMP.chpp = (function() {
 					if (options.pushState ?? true) history.pushState({}, null, `/m/${matchId}`);
 				} else {
 					matchForm.classList.add('is-invalid');
+				}
+			}
+			request.send();
+		},
+
+		saveMatchRatings: function(matchId, isHome, options = {}) {
+			let timeline = options.timeline ?? true;
+			let path = `/match?match_id=${matchId}&timeline=${timeline}`;
+			let request = new XMLHttpRequest();
+			request.open('GET', path, true);
+			request.onload = () => {
+				if (request.status == 200) {
+					let ratings;
+					if (!timeline) {
+						let xml = request.responseXML;
+						if (isHome) {
+							ratings = _getXmlRatings(xml.getElementsByTagName('HomeTeam')[0]);
+						} else {
+							ratings = _getXmlRatings(xml.getElementsByTagName('AwayTeam')[0]);
+						}
+					} else {
+						let json = JSON.parse(request.response);
+						if (isHome) {
+							ratings = _getJsonRatingsHome(json);
+						} else {
+							ratings = _getJsonRatingsAway(json);
+						}
+					}
+					let a = document.createElement('a');
+					a.href = 'data:text/json;charset=utf-8,' + JSON.stringify(ratings);
+					a.download = `${matchId}-${isHome ? 'home' : 'away'}.imp`;
+					document.body.appendChild(a).click();
 				}
 			}
 			request.send();

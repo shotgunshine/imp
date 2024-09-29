@@ -6,8 +6,6 @@ session_start([
 	'cookie_samesite' => 'Strict',
 ]);
 
-error_reporting(E_ALL);
-
 $uri = explode('/', parse_url($_SERVER['REQUEST_URI'])['path']);
 
 if ($uri[1] == '' or $uri[1] == 'm') {
@@ -24,7 +22,8 @@ elseif ($uri[1] == 'team') {
 		} else {
 			$teamId = '';
 		}
-		$matches = new SimpleXMLElement(file_get_contents('/matches?team_id=' . $teamId));
+		require 'chpp/match.php';
+		$matches = getMatches($teamId);
 		if ($matches->Team->MatchList->children()) {
 			require 'lang/lang.php';
 			$title = htmlspecialchars($matches->Team->TeamName);
@@ -73,6 +72,13 @@ elseif ($uri[1] == 'request_token_ready') {
 		if (isset($response['oauth_token'])) {
 			$_SESSION['accessToken'] = $response['oauth_token'];
 			$_SESSION['accessSecret'] = $response['oauth_token_secret'];
+			$_SESSION['teams'] = [];
+			require 'chpp/match.php';
+			foreach (getTeams()->Teams->children() as $t) {
+				$teamId = $t->TeamID->__toString();
+				$teamName = $t->ShortTeamName->__toString();
+				$_SESSION['teams'][$teamId] = $teamName;
+			}
 		}
 	}
 	header('Location: /', true, 302);
@@ -87,19 +93,29 @@ elseif ($uri[1] == 'match') {
 	if (isset($_SESSION['accessToken'])) {
 		require 'chpp/match.php';
 		if (boolval($_GET['timeline'])) {
-			getMatchTimeline(intval($_GET['match_id']));
+			$cache = 'cache/' . $matchId . '.json';
+			if (file_exists($cache)) {
+				header('Cache-Control: public, max-age=31536000');
+				echo file_get_contents($cache);
+			} else {
+				$match = getMatchTimeline(intval($_GET['match_id']));
+				if ($match === null or ! $match->isFinished or $match->isWalkover) {
+					header('HTTP/1.0 404 Not found');
+				} else {
+					header('Cache-Control: public, max-age=31536000');
+					file_put_contents($cache, json_encode($match));
+					echo json_encode($match);
+				}
+			}
 		} else {
-			getMatch(intval($_GET['match_id']));
+			$match = getMatch(intval($_GET['match_id']));
+			if ($match->Match->FinishedDate) {
+				header('Cache-Control: public, max-age=31536000');
+				echo $match->asXML();
+			} else {
+				header('HTTP/1.0 404 Not found');
+			}
 		}
-	} else {
-		header('HTTP/1.0 401 Unauthorized');
-	}
-}
-
-elseif ($uri[1] == 'matches') {
-	if (isset($_SESSION['accessToken'])) {
-		require 'chpp/match.php';
-		getMatches(intval($_GET['team_id']));
 	} else {
 		header('HTTP/1.0 401 Unauthorized');
 	}

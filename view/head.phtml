@@ -25,7 +25,16 @@
 		<div class="navbar-nav flex-row flex-grow-1">
 <?php
 if (isset($_SESSION['accessToken'])) {
-	echo '<a href="/team" class="nav-link active">' . getTranslation('headMyTeam') . '</a>';
+	if (count($_SESSION['teams']) == 1) {
+		echo '<a href="/team" class="nav-link active">' . getTranslation('headMyTeam') . '</a>';
+	} else {
+		echo '<select class="form-select w-auto" onchange="window.location = \'/team/\' + this.value">';
+		echo '<option selected>' . getTranslation('headMyTeam') . '</option>';
+		foreach ($_SESSION['teams'] as $teamId => $teamName) {
+			echo '<option value="' . $teamId . '">' . $teamName . '</option>';
+		}
+		echo '</select>';
+	}
 }
 ?>
 		</div>

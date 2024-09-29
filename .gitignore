@@ -1,8 +1,0 @@
-~*
-.*
-*~.*
-*.tmp
-*.swp
-tags
-nginx.conf
-cache/

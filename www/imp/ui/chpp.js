@@ -124,8 +124,7 @@ IMP.chpp = (function() {
 						if (tactic > 0) {
 							tr.children[4].innerHTML += `<br>${locale.tactics[tactic]}&nbsp(${tacticLevel})`;
 						}
-						tr.children[5].innerHTML = `
-							<table class="table table-sm table-bordered text-center m-0">
+						tr.children[5].innerHTML = `<table class="table table-sm table-bordered text-center m-0">
 							<tr><td>${(ratings.rightDefense + 0.75).toFixed(2)}</td>
 							<td>${(ratings.centralDefense + 0.75).toFixed(2)}</td>
 							<td>${(ratings.leftDefense + 0.75).toFixed(2)}</td></tr>
@@ -133,7 +132,7 @@ IMP.chpp = (function() {
 							<tr><td>${(ratings.rightAttack + 0.75).toFixed(2)}</td>
 							<td>${(ratings.centralAttack + 0.75).toFixed(2)}</td>
 							<td>${(ratings.leftAttack + 0.75).toFixed(2)}</td></tr>
-						`;
+						</table>`;
 					}
 				});
 			}

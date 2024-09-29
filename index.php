@@ -93,7 +93,7 @@ elseif ($uri[1] == 'match') {
 	if (isset($_SESSION['accessToken'])) {
 		require 'chpp/match.php';
 		if (boolval($_GET['timeline'])) {
-			$cache = 'cache/' . $matchId . '.json';
+			$cache = 'cache/' . intval($_GET['match_id']) . '.json';
 			if (file_exists($cache)) {
 				header('Cache-Control: public, max-age=31536000');
 				echo file_get_contents($cache);

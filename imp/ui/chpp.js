@@ -41,24 +41,31 @@ IMP.chpp = (function() {
 		);
 	}
 
+	function _getMatch(matchId, callback) {
+			let path = `/match?match_id=${matchId}&timeline=true`;
+			let request = new XMLHttpRequest();
+			request.open('GET', path, true);
+			request.onload = () => { callback(request); }
+			request.send();
+	}
+
 	return {
 		importMatchRatings: function(options = {}) {
 			let matchForm = document.getElementById('match_id');
 			let matchId = Number(matchForm.value);
-			let path = `/match?match_id=${matchId}&timeline=true`;
-			let request = new XMLHttpRequest();
-			request.open('GET', path, true);
-			request.onload = () => {
+			_getMatch(matchId, request => {
 				if (request.status == 200) {
 					matchForm.classList.remove('is-invalid');
 					document.getElementById('match_invalid').classList.add('d-none');
 					document.getElementById('match_sign').classList.add('d-none');
+
 					let json = JSON.parse(request.response);
-					let homeName = json.homeTeamName;
-					let awayName = json.awayTeamName;
 					IMP.form.setHomeRatings(_getJsonRatingsHome(json));
 					IMP.form.setAwayRatings(_getJsonRatingsAway(json));
 					IMP.prediction.printPrediction(false);
+
+					let homeName = json.homeTeamName;
+					let awayName = json.awayTeamName;
 					document.title = `${homeName.slice(0, 8).trim()} - ${awayName.slice(0, 8).trim()} · IMP`;
 					document.getElementById('home_name').textContent = homeName;
 					document.getElementById('away_name').textContent = awayName;
@@ -72,40 +79,26 @@ IMP.chpp = (function() {
 					document.getElementById('match_sign').classList.remove('d-none');
 					matchForm.classList.add('is-invalid');
 				}
-			}
-			request.send();
+			});
 		},
 
 		saveMatchRatings: function(matchId, isHome) {
-			let path = `/match?match_id=${matchId}&timeline=true`;
-			let request = new XMLHttpRequest();
-			request.open('GET', path, true);
-			request.onload = () => {
+			_getMatch(matchId, request => {
 				if (request.status == 200) {
-					let ratings;
 					let json = JSON.parse(request.response);
-					if (isHome) {
-						ratings = _getJsonRatingsHome(json);
-					} else {
-						ratings = _getJsonRatingsAway(json);
-					}
+					let ratings = isHome ? _getJsonRatingsHome(json) : _getJsonRatingsAway(json);
 					let a = document.createElement('a');
 					a.href = 'data:text/json;charset=utf-8,' + JSON.stringify(ratings);
 					a.download = `${matchId}-${isHome ? 'home' : 'away'}.imp`;
 					document.body.appendChild(a).click();
 				}
-			}
-			request.send();
+			});
 		},
 
-		importMatchesRatings: function() {
-			let tactics = ['', 'Press', 'CA', 'AIM', 'AOW', '', '', 'PC', 'LS']; // to-do: localize
+		importMatchesRatings: function(locale) {
 			for (let tr of document.querySelectorAll('#matches > tbody > tr')) {
 				let matchId = tr.getAttribute('match-id');
-				let path = `/match?match_id=${matchId}&timeline=true`;
-				let request = new XMLHttpRequest();
-				request.open('GET', path, true);
-				request.onload = () => {
+				_getMatch(matchId, request => {
 					if (request.status == 200) {
 						let json = JSON.parse(request.response);
 						let lineups = json.events.filter(x => x.eventType == 23 || x.eventType == 24);
@@ -122,14 +115,14 @@ IMP.chpp = (function() {
 							tacticLevel = json.awayTacticSkill;
 							tr.children[4].innerHTML = lineups[1] ?? lineups[0];
 							if (json.events.filter(x => x.eventType == 25).length > 0) {
-								tr.children[2].innerHTML = 'Derby'; // to-do: localize
+								tr.children[2].innerHTML = locale.derby;
 							}
 						}
 						if (json.events.filter(x => x.eventType == 26).length > 0) {
-							tr.children[2].innerHTML = 'Neutral'; // to-do: localize
+							tr.children[2].innerHTML = locale.neutral;
 						}
 						if (tactic > 0) {
-							tr.children[4].innerHTML += `<br>${tactics[tactic]}&nbsp(${tacticLevel})`;
+							tr.children[4].innerHTML += `<br>${locale.tactics[tactic]}&nbsp(${tacticLevel})`;
 						}
 						tr.children[5].innerHTML = `
 							<table class="table table-sm table-bordered text-center m-0">
@@ -142,8 +135,7 @@ IMP.chpp = (function() {
 							<td>${(ratings.leftAttack + 0.75).toFixed(2)}</td></tr>
 						`;
 					}
-				}
-				request.send();
+				});
 			}
 		}
 	};

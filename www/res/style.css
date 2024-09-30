@@ -8,7 +8,7 @@ body {font-family: 'Cantarell';}
 
 .container {max-width: 900px;}
 
-label, #copyForumBtn, #doubleHeader, #gradient td {
+label, #doubleHeader, #gradient td {
 	font-size: 0.8rem;
 	vertical-align: middle;
 }

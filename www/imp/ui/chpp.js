@@ -101,38 +101,44 @@ IMP.chpp = (function() {
 				_getMatch(matchId, request => {
 					if (request.status == 200) {
 						let json = JSON.parse(request.response);
-						let lineups = json.events.filter(x => x.eventType == 23 || x.eventType == 24);
-						lineups = lineups[0].eventText.match(/[0-9]-[0-9]-[0-9]/g);
-						let ratings, tactic, tacticLevel;
-						if (tr.getAttribute('is-home') === 'true') {
-							ratings = _getJsonRatingsHome(json);
-							tactic = json.homeTacticType;
-							tacticLevel = json.homeTacticSkill;
-							tr.children[4].innerHTML = lineups[0];
-						} else {
-							ratings = _getJsonRatingsAway(json);
-							tactic = json.awayTacticType;
-							tacticLevel = json.awayTacticSkill;
-							tr.children[4].innerHTML = lineups[1] ?? lineups[0];
-							if (json.events.filter(x => x.eventType == 25).length > 0) {
-								tr.children[2].innerHTML = locale.derby;
+						if (json.events.filter(x => x.eventType == 22 || x.eventType == 28).length == 0) {
+							let lineups = json.events.filter(x => x.eventType == 23 || x.eventType == 24);
+							lineups = lineups[0].eventText.match(/[0-9]-[0-9]-[0-9]/g);
+							let ratings, tactic, tacticLevel;
+							if (tr.getAttribute('is-home') === 'true') {
+								ratings = _getJsonRatingsHome(json);
+								tactic = json.homeTacticType;
+								tacticLevel = json.homeTacticSkill;
+								tr.children[4].innerHTML = lineups[0];
+							} else {
+								ratings = _getJsonRatingsAway(json);
+								tactic = json.awayTacticType;
+								tacticLevel = json.awayTacticSkill;
+								tr.children[4].innerHTML = lineups[1] ?? lineups[0];
+								if (json.events.filter(x => x.eventType == 25).length > 0) {
+									tr.children[2].innerHTML = locale.derby;
+								}
 							}
+							if (json.events.filter(x => x.eventType == 26).length > 0) {
+								tr.children[2].innerHTML = locale.neutral;
+							}
+							if (tactic > 0) {
+								tr.children[4].innerHTML += `<br>${locale.tactics[tactic]}&nbsp(${tacticLevel})`;
+							}
+							tr.children[5].innerHTML = `<table class="table table-sm table-bordered text-center m-0">
+								<tr><td>${(ratings.rightDefense + 0.75).toFixed(2)}</td>
+								<td>${(ratings.centralDefense + 0.75).toFixed(2)}</td>
+								<td>${(ratings.leftDefense + 0.75).toFixed(2)}</td></tr>
+								<tr><td colspan="3">${(ratings.midfield + 0.75).toFixed(2)}</td></tr>
+								<tr><td>${(ratings.rightAttack + 0.75).toFixed(2)}</td>
+								<td>${(ratings.centralAttack + 0.75).toFixed(2)}</td>
+								<td>${(ratings.leftAttack + 0.75).toFixed(2)}</td></tr>
+							</table>`;
+						} else {
+							tr.children[6].innerHTML = '';
 						}
-						if (json.events.filter(x => x.eventType == 26).length > 0) {
-							tr.children[2].innerHTML = locale.neutral;
-						}
-						if (tactic > 0) {
-							tr.children[4].innerHTML += `<br>${locale.tactics[tactic]}&nbsp(${tacticLevel})`;
-						}
-						tr.children[5].innerHTML = `<table class="table table-sm table-bordered text-center m-0">
-							<tr><td>${(ratings.rightDefense + 0.75).toFixed(2)}</td>
-							<td>${(ratings.centralDefense + 0.75).toFixed(2)}</td>
-							<td>${(ratings.leftDefense + 0.75).toFixed(2)}</td></tr>
-							<tr><td colspan="3">${(ratings.midfield + 0.75).toFixed(2)}</td></tr>
-							<tr><td>${(ratings.rightAttack + 0.75).toFixed(2)}</td>
-							<td>${(ratings.centralAttack + 0.75).toFixed(2)}</td>
-							<td>${(ratings.leftAttack + 0.75).toFixed(2)}</td></tr>
-						</table>`;
+					} else {
+						tr.children[6].innerHTML = '';
 					}
 				});
 			}

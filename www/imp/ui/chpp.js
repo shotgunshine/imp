@@ -49,6 +49,22 @@ IMP.chpp = (function() {
 			request.send();
 	}
 
+	function _playerIconName(positionId, behaviour) {
+		switch (behaviour) {
+			case 0: return 'normal';
+			case 1: return 'down';
+			case 2: return 'up';
+			case 3: return (positionId == 101 || positionId == 106) ? 'right' : 'left';
+			case 4: return (positionId == 102 || positionId == 107 || positionId == 111) ? 'left' : 'right';
+			default: return 'empty';
+		}
+	}
+
+	function _playerIcon(players, positionId) {
+		let player = players.filter(q => q.positionId == positionId)[0];
+		return `<img src="/res/img/lineup/${_playerIconName(positionId, player ? player.behaviour : null)}.svg" width="12">`;
+	}
+
 	return {
 		importMatchRatings: function(options = {}) {
 			let matchForm = document.getElementById('match_id');
@@ -104,14 +120,16 @@ IMP.chpp = (function() {
 						if (json.events.filter(x => x.eventType == 22 || x.eventType == 28).length == 0) {
 							let lineups = json.events.filter(x => x.eventType == 23 || x.eventType == 24);
 							lineups = lineups[0].eventText.match(/[0-9]-[0-9]-[0-9]/g);
-							let ratings, tactic, tacticLevel;
+							let ratings, players, tactic, tacticLevel;
 							if (tr.getAttribute('is-home') === 'true') {
 								ratings = _getJsonRatingsHome(json);
+								players = json.analysis.timeline.filter(x => x.minute < 5).at(-1).ratings.homePlayers;
 								tactic = json.homeTacticType;
 								tacticLevel = json.homeTacticSkill;
 								tr.children[4].innerHTML = lineups[0];
 							} else {
 								ratings = _getJsonRatingsAway(json);
+								players = json.analysis.timeline.filter(x => x.minute < 5).at(-1).ratings.awayPlayers;
 								tactic = json.awayTacticType;
 								tacticLevel = json.awayTacticSkill;
 								tr.children[4].innerHTML = lineups[1] ?? lineups[0];
@@ -125,7 +143,24 @@ IMP.chpp = (function() {
 							if (tactic > 0) {
 								tr.children[4].innerHTML += `<br>${locale.tactics[tactic]}&nbsp(${tacticLevel})`;
 							}
-							tr.children[5].innerHTML = `<table class="table table-sm table-bordered text-center m-0">
+							tr.children[5].innerHTML = `<table class="table table-sm table-borderless text-center m-0">
+								<tr><td>${_playerIcon(players, 101)}</td>
+								<td>${_playerIcon(players, 102)}</td>
+								<td>${_playerIcon(players, 103)}</td>
+								<td>${_playerIcon(players, 104)}</td>
+								<td>${_playerIcon(players, 105)}</td></tr>
+								<tr><td>${_playerIcon(players, 106)}</td>
+								<td>${_playerIcon(players, 107)}</td>
+								<td>${_playerIcon(players, 108)}</td>
+								<td>${_playerIcon(players, 109)}</td>
+								<td>${_playerIcon(players, 110)}</td></tr>
+								<tr><td>${_playerIcon(players, 0)}</td>
+								<td>${_playerIcon(players, 111)}</td>
+								<td>${_playerIcon(players, 112)}</td>
+								<td>${_playerIcon(players, 113)}</td>
+								<td>${_playerIcon(players, 0)}</td></tr>
+							</table>`;
+							tr.children[6].innerHTML = `<table class="table table-sm table-bordered text-center m-0">
 								<tr><td>${(ratings.rightDefense + 0.75).toFixed(2)}</td>
 								<td>${(ratings.centralDefense + 0.75).toFixed(2)}</td>
 								<td>${(ratings.leftDefense + 0.75).toFixed(2)}</td></tr>
@@ -135,10 +170,10 @@ IMP.chpp = (function() {
 								<td>${(ratings.leftAttack + 0.75).toFixed(2)}</td></tr>
 							</table>`;
 						} else {
-							tr.children[6].innerHTML = '';
+							tr.children[7].innerHTML = '';
 						}
 					} else {
-						tr.children[6].innerHTML = '';
+						tr.children[7].innerHTML = '';
 					}
 				});
 			}

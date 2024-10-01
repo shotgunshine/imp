@@ -37,12 +37,12 @@ function generateSignature($httpMethod, $path, $params, $tokenSecret) {
 
 	$signatureKey = rawurlencode(consumerSecret) . '&' . rawurlencode($tokenSecret);
 
-	return base64_encode(hash_hmac(
+	return rawurlencode(base64_encode(hash_hmac(
 		'sha1',
 		$signatureBaseString,
 		$signatureKey,
 		true
-	));
+	)));
 }
 
 function chppRequest($path, $params, $tokenSecret) {
@@ -56,6 +56,7 @@ function chppRequest($path, $params, $tokenSecret) {
 
 function obtainRequestToken() {
 	$params = [
+		'oauth_callback' => rawurlencode('https://' . $_SERVER['SERVER_NAME'] . '/request_token_ready'),
 		'oauth_consumer_key' => consumerKey,
 		'oauth_signature_method' => signatureMethod,
 		'oauth_timestamp' => time(),

@@ -49,8 +49,7 @@ elseif ($uri[1] == 'login') {
 	if (isset($response['oauth_token'])) {
 		$_SESSION['requestToken'] = $response['oauth_token'];
 		$_SESSION['requestSecret'] = $response['oauth_token_secret'];
-		$path = paths['authorizeToken'] . '?oauth_token=' . $response['oauth_token'];
-		$path .= '&oauth_callback=https://' . $_SERVER['SERVER_NAME'] . '/request_token_ready';
+		$path = paths['authorizeToken'] . '?oauth_token=' . rawurlencode($response['oauth_token']);
 		header('Location: ' . $path, true, 302);
 	} else {
 		require $root . 'lang/lang.php';

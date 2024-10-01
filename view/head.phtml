@@ -31,7 +31,7 @@ if (isset($_SESSION['accessToken'])) {
 		echo '<select class="form-select w-auto" onchange="window.location = \'/team/\' + this.value">';
 		echo '<option selected>' . getTranslation('headMyTeam') . '</option>';
 		foreach ($_SESSION['teams'] as $teamId => $teamName) {
-			echo '<option value="' . $teamId . '">' . $teamName . '</option>';
+			echo '<option value="' . $teamId . '">' . htmlspecialchars($teamName) . '</option>';
 		}
 		echo '</select>';
 	}

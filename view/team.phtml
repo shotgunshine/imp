@@ -20,24 +20,24 @@ function matchItem($match, $teamName) {
 	if ($match->HomeTeam->HomeTeamName->__toString() == $teamName) {
 		return [
 			'date' => $matchDate,
-			'type' => $matchType,
+			'type' => getTranslation('teamMatchType' . $matchType),
 			'icon' => matchTypeIcons[$matchType],
 			'ground' => getTranslation('teamGroundHome'),
-			'teamName' => $match->HomeTeam->HomeTeamName,
+			'teamName' => htmlspecialchars($match->HomeTeam->HomeTeamName),
 			'teamId' => $match->HomeTeam->HomeTeamID,
-			'oppName' => $match->AwayTeam->AwayTeamName,
+			'oppName' => htmlspecialchars($match->AwayTeam->AwayTeamName),
 			'oppId' => $match->AwayTeam->AwayTeamID,
 			'isHome' => 'true'
 		];
 	} else {
 		return [
 			'date' => $matchDate,
-			'type' => $matchType,
+			'type' => getTranslation('teamMatchType' . $matchType),
 			'icon' => matchTypeIcons[$matchType],
 			'ground' => getTranslation('teamGroundAway'),
-			'teamName' => $match->AwayTeam->AwayTeamName,
+			'teamName' => htmlspecialchars($match->AwayTeam->AwayTeamName),
 			'teamId' => $match->AwayTeam->AwayTeamID,
-			'oppName' => $match->HomeTeam->HomeTeamName,
+			'oppName' => htmlspecialchars($match->HomeTeam->HomeTeamName),
 			'oppId' => $match->HomeTeam->HomeTeamID,
 			'isHome' => 'false'
 		];
@@ -52,8 +52,8 @@ foreach($matches->Team->MatchList->children() as $m) {
 	if ($m->SourceSystem == 'Hattrick' and $m->Status == 'FINISHED') {
 		$match = matchItem($m, $title);
 		echo '<tr match-id="' . $m->MatchID . '" is-home="' . $match['isHome'] . '">
-			<td class="text-center">' . $match['date']. '</td>
-			<td title="' . getTranslation('teamMatchType' . $match['type']) . '">
+			<td class="text-center" title="' . $m->MatchDate . '">' . $match['date']. '</td>
+			<td title="' . $match['type'] . '">
 				<img src="/res/img/match/' . $match['icon'] . '.svg" width="16">
 			</td>
 			<td class="text-center">' . $match['ground'] . '</td>
@@ -80,8 +80,8 @@ foreach($matches->Team->MatchList->children() as $m) {
 	if ($m->SourceSystem == 'Hattrick' and $m->Status == 'UPCOMING') {
 		$match = matchItem($m, $title);
 		echo '<tr>
-			<td class="text-center">' . $match['date'] . '</td>
-			<td title="' . getTranslation('teamMatchType' . $match['type']) . '">
+			<td class="text-center" title="' . $m->MatchDate . '">' . $match['date'] . '</td>
+			<td title="' . $match['type'] . '">
 				<img src="/res/img/match/' . $match['icon'] . '.svg" width="16">
 			</td>
 			<td width="99%"><a href="/team/' . $match['oppId'] . '">' . $match['oppName'] . '</a></td>

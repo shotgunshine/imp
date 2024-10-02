@@ -75,17 +75,18 @@ foreach($matches->Team->MatchList->children() as $m) {
 	</table>
 </div>
 <h3><?= getTranslation('teamNextMatches'); ?></h3>
-<table class="table">
+<table class="table table-hover">
 <?php
 foreach($matches->Team->MatchList->children() as $m) {
 	if ($m->SourceSystem == 'Hattrick' and $m->Status == 'UPCOMING') {
 		$match = matchItem($m, $title);
-		echo '<tr>
+		echo '<tr role="button" onclick="window.location = \'/team/' . $match['oppId'] . '\'">
 			<td class="text-center" title="' . $m->MatchDate . '">' . $match['date'] . '</td>
 			<td title="' . $match['type'] . '">
 				<img src="/res/img/match/' . $match['icon'] . '.svg" width="16">
 			</td>
-			<td width="99%"><a href="/team/' . $match['oppId'] . '">' . $match['oppName'] . '</a></td>
+			<td width="99%">' . $match['oppName'] . '</td>
+			<td>→</td>
 		</tr>';
 	}
 }

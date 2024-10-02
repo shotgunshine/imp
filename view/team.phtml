@@ -49,7 +49,7 @@ function matchItem($match, $teamName) {
 	<table class="table align-middle" id="matches">
 <?php
 foreach($matches->Team->MatchList->children() as $m) {
-	if ($m->SourceSystem == 'Hattrick' and $m->Status == 'FINISHED') {
+	if ($m->SourceSystem == 'Hattrick' and $m->Status != 'UPCOMING') {
 		$match = matchItem($m, $title);
 		echo '<tr match-id="' . $m->MatchID . '" is-home="' . $match['isHome'] . '">
 			<td class="text-center" title="' . $m->MatchDate . '">' . $match['date']. '</td>

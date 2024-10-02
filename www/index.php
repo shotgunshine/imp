@@ -21,10 +21,23 @@ elseif ($uri[1] == 'team') {
 		if (isset($uri[2])) {
 			$teamId = intval($uri[2]);
 		} else {
-			$teamId = '';
+			$teamId = array_keys($_SESSION['teams'])[0];
 		}
 		require $root . 'chpp/match.php';
-		$matches = getMatches($teamId);
+		$cache = $root . 'cache/matchlist/' . $teamId . '.xml';
+		if (file_exists($cache)) {
+			$matches = new SimpleXMLElement(file_get_contents($cache));
+			if (intval($matches->Expires) < time()) unset($matches);
+		}
+		if (! isset($matches)) {
+			$matches = getMatches($teamId);
+			foreach ($matches->Team->MatchList->children() as $m) {
+				if ($m->Status == 'UPCOMING' and ! isset($matches->Expires)) {
+					$matches->Expires = strtotime($m->MatchDate);
+				}
+			}
+			file_put_contents($cache, $matches->asXML());
+		}
 		if ($matches->Team->MatchList->children()) {
 			require $root . 'lang/lang.php';
 			$title = htmlspecialchars($matches->Team->TeamName);
@@ -32,10 +45,10 @@ elseif ($uri[1] == 'team') {
 			require $root . 'view/team.phtml';
 			require $root . 'view/foot.phtml';
 		} else {
-			if ($teamId === '') {
-				header('Location: /logout', true, 302);
-			} else {
+			if (isset($uri[2])) {
 				header('Location: /team', true, 302);
+			} else {
+				header('Location: /logout', true, 302);
 			}
 		}
 	} else {
@@ -93,7 +106,7 @@ elseif ($uri[1] == 'match') {
 	if (isset($_SESSION['accessToken'])) {
 		require $root . 'chpp/match.php';
 		if (boolval($_GET['timeline'])) {
-			$cache = $root . 'cache/' . intval($_GET['match_id']) . '.json';
+			$cache = $root . 'cache/match/' . intval($_GET['match_id']) . '.json';
 			if (file_exists($cache)) {
 				header('Cache-Control: public, max-age=31536000');
 				echo file_get_contents($cache);

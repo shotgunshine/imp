@@ -114,6 +114,7 @@ IMP.chpp = (function() {
 		importMatchesRatings: function(locale) {
 			for (let tr of document.querySelectorAll('#matches > tbody > tr')) {
 				let matchId = tr.getAttribute('match-id');
+				let isHome = tr.getAttribute('is-home');
 				_getMatch(matchId, request => {
 					if (request.status == 200) {
 						let json = JSON.parse(request.response);
@@ -121,7 +122,7 @@ IMP.chpp = (function() {
 							let lineups = json.events.filter(x => x.eventType == 23 || x.eventType == 24);
 							lineups = lineups[0].eventText.match(/[0-9]-[0-9]-[0-9]/g);
 							let ratings, players, tactic, tacticLevel;
-							if (tr.getAttribute('is-home') === 'true') {
+							if (isHome == 'true') {
 								ratings = _getJsonRatingsHome(json);
 								players = json.analysis.timeline.filter(x => x.minute < 5).at(-1).ratings.homePlayers;
 								tactic = json.homeTacticType;
@@ -169,11 +170,13 @@ IMP.chpp = (function() {
 								<td>${(ratings.centralAttack + 0.75).toFixed(2)}</td>
 								<td>${(ratings.leftAttack + 0.75).toFixed(2)}</td></tr>
 							</table>`;
-						} else {
-							tr.children[7].innerHTML = '';
+							tr.children[7].innerHTML = `<button
+								class="btn btn-inverted p-2"
+								title="${locale.save}"
+								onclick="IMP.chpp.saveMatchRatings(${matchId}, ${isHome})">
+									<img src="/res/img/save.svg" width="24">
+							</button>`;
 						}
-					} else {
-						tr.children[7].innerHTML = '';
 					}
 				});
 			}

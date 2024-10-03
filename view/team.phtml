@@ -61,13 +61,7 @@ foreach($matches->Team->MatchList->children() as $m) {
 			<td class="text-center"></td>
 			<td class="text-center"></td>
 			<td class="text-center"></td>
-			<td>
-				<button class="btn btn-inverted p-2"
-					title="' . getTranslation('teamSaveAlt') . '"
-					onclick="IMP.chpp.saveMatchRatings(' . $m->MatchID . ', ' . $match['isHome'] . ')">
-					<img src="/res/img/save.svg" width="24">
-				</button>
-			</td>
+			<td class="text-center"></td>
 		</tr>';
 	}
 }
@@ -115,7 +109,8 @@ foreach($matches->Team->MatchList->children() as $m) {
 			'<?= getTranslation('teamTacticShort8') ?>'
 		],
 		derby: '<?= getTranslation('teamGroundDerby') ?>',
-		neutral: '<?= getTranslation('teamGroundNeutral') ?>'
+		neutral: '<?= getTranslation('teamGroundNeutral') ?>',
+		save: '<?= getTranslation('teamSaveAlt') ?>'
 	};
 	document.onload = IMP.chpp.importMatchesRatings(translations);
 </script>

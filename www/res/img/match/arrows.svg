@@ -1,16 +1,21 @@
 <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
 	<defs>
 		<style>
-			.imp { stroke: #212529; }
+			.imp {
+				stroke: #212529;
+				fill: #212529;
+			}
 			@media (prefers-color-scheme: dark) {
-				.imp { stroke: #dee2e6; }
+				.imp {
+					stroke: #dee2e6;
+					fill: #dee2e6;
+				}
 			}
 		</style>
 	</defs>
 	<path
 		class="imp"
-		d="M10.5 0.5 h-5 v12 h8 v-9 l-3 -3 v3 h3 M2.5 4.5 v11 h9"
-		fill="none"
+		d="M6.5 10.5 v-6 h2 l-3 -4 l-3 4 h2 v6 z M7.5 11.5 h2 v-6 h2 v6 h2 l-3 4 z"
 		stroke-linecap="round"
 		stroke-linejoin="round"
 		stroke-width="1"

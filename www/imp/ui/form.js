@@ -131,7 +131,7 @@ IMP.form = (function() {
 			return _flipRatings(_formSide.away);
 		},
 
-		updateLiveProbabilities: function(home, away) {
+		updateLiveProbabilities: function() {
 			_updateLiveProbabilities(_formSide.home, _formSide.away);
 			_updateLiveProbabilities(_formSide.away, _formSide.home);
 		}

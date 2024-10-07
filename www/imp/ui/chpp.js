@@ -155,11 +155,11 @@ IMP.chpp = (function() {
 								<td>${_playerIcon(players, 108)}</td>
 								<td>${_playerIcon(players, 109)}</td>
 								<td>${_playerIcon(players, 110)}</td></tr>
-								<tr><td>${_playerIcon(players, 0)}</td>
+								<tr><td>${_playerIcon(players, null)}</td>
 								<td>${_playerIcon(players, 111)}</td>
 								<td>${_playerIcon(players, 112)}</td>
 								<td>${_playerIcon(players, 113)}</td>
-								<td>${_playerIcon(players, 0)}</td></tr>
+								<td>${_playerIcon(players, null)}</td></tr>
 							</table>`;
 							tr.children[6].innerHTML = `<table class="table table-sm table-bordered text-center m-0">
 								<tr><td>${(ratings.rightDefense + 0.75).toFixed(2)}</td>

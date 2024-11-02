@@ -4,7 +4,9 @@
 	src: url('font/Cantarell-VF.otf');
 }
 
-body {font-family: 'Cantarell';}
+:root {--bs-font-sans-serif: 'Cantarell', sans-serif;}
+
+body, input {font-variant-numeric: tabular-nums;}
 
 .container {max-width: 900px;}
 

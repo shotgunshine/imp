@@ -18,7 +18,7 @@ if ($uri[1] == '' or $uri[1] == 'm') {
 
 elseif ($uri[1] == 'team') {
 	if (isset($_SESSION['accessToken'])) {
-		if (isset($uri[2])) {
+		if (isset($uri[2]) and $uri[2] !== '') {
 			$teamId = intval($uri[2]);
 		} else {
 			$teamId = array_keys($_SESSION['teams'])[0];

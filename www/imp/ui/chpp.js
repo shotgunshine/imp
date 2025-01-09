@@ -118,7 +118,8 @@ IMP.chpp = (function() {
 				_getMatch(matchId, request => {
 					if (request.status == 200) {
 						let json = JSON.parse(request.response);
-						if (json.events.filter(x => x.eventType == 22 || x.eventType == 28).length == 0) {
+						let teamId = isHome ? json.homeTeamId : json.awayTeamId;
+						if (json.events.filter(x => x.subjectTeamId == teamId && (x.eventType == 22 || x.eventType == 28)).length == 0) {
 							let lineups = json.events.filter(x => x.eventType == 23 || x.eventType == 24);
 							lineups = lineups[0].eventText.match(/[0-9]-[0-9]-[0-9]/g);
 							let ratings, players, tactic, tacticLevel;
@@ -176,6 +177,8 @@ IMP.chpp = (function() {
 								onclick="IMP.chpp.saveMatchRatings(${matchId}, ${isHome})">
 									<img src="/res/img/save.svg" width="24">
 							</button>`;
+						} else {
+							tr.children[4].innerHTML = 'W/O';
 						}
 					}
 				});

@@ -119,27 +119,26 @@ IMP.chpp = (function() {
 					if (request.status == 200) {
 						let json = JSON.parse(request.response);
 						let teamId = isHome ? json.homeTeamId : json.awayTeamId;
-						if (json.events.filter(x => x.subjectTeamId == teamId && (x.eventType == 22 || x.eventType == 28)).length == 0) {
-							let lineups = json.events.filter(x => x.eventType == 23 || x.eventType == 24);
-							lineups = lineups[0].eventText.match(/[0-9]-[0-9]-[0-9]/g);
+						if (json.events.filter(e => e.subjectTeamId == teamId && (e.eventType == 22 || e.eventType == 28)).length == 0) {
+							let lineups = json.events.filter(e => e.eventType == 23 || e.eventType == 24).flatMap(e => e.eventText.match(/[0-9]-[0-9]-[0-9]/g));
 							let ratings, players, tactic, tacticLevel;
 							if (isHome == 'true') {
 								ratings = _getJsonRatingsHome(json);
-								players = json.analysis.timeline.filter(x => x.minute < 5).at(-1).ratings.homePlayers;
+								players = json.analysis.timeline.filter(t => t.minute < 5).at(-1).ratings.homePlayers;
 								tactic = json.homeTacticType;
 								tacticLevel = json.homeTacticSkill;
 								tr.children[4].innerHTML = lineups[0];
 							} else {
 								ratings = _getJsonRatingsAway(json);
-								players = json.analysis.timeline.filter(x => x.minute < 5).at(-1).ratings.awayPlayers;
+								players = json.analysis.timeline.filter(t => t.minute < 5).at(-1).ratings.awayPlayers;
 								tactic = json.awayTacticType;
 								tacticLevel = json.awayTacticSkill;
 								tr.children[4].innerHTML = lineups[1] ?? lineups[0];
-								if (json.events.filter(x => x.eventType == 25).length > 0) {
+								if (json.events.filter(e => e.eventType == 25).length > 0) {
 									tr.children[2].innerHTML = locale.derby;
 								}
 							}
-							if (json.events.filter(x => x.eventType == 26).length > 0) {
+							if (json.events.filter(e => e.eventType == 26).length > 0) {
 								tr.children[2].innerHTML = locale.neutral;
 							}
 							if (tactic > 0) {

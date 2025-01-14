@@ -18,18 +18,15 @@ if ($uri[1] == '' or $uri[1] == 'm') {
 
 elseif ($uri[1] == 'team') {
 	if (isset($_SESSION['accessToken'])) {
-		if (isset($uri[2]) and $uri[2] !== '') {
+		if (intval($uri[2])) {
 			$teamId = intval($uri[2]);
 		} else {
 			$teamId = array_keys($_SESSION['teams'])[0];
 		}
-		require $root . 'chpp/match.php';
 		$cache = $root . 'cache/matchlist/' . $teamId . '.xml';
-		if (file_exists($cache)) {
-			$matches = new SimpleXMLElement(file_get_contents($cache));
-			if (intval($matches->Expires) < time()) unset($matches);
-		}
-		if (! isset($matches)) {
+		$matches = new SimpleXMLElement(file_get_contents($cache));
+		if (intval($matches->Expires) < time()) {
+			require $root . 'chpp/match.php';
 			$matches = getMatches($teamId);
 			foreach ($matches->Team->MatchList->children() as $m) {
 				if ($m->Status == 'UPCOMING' and ! isset($matches->Expires)) {
@@ -45,7 +42,7 @@ elseif ($uri[1] == 'team') {
 			require $root . 'view/team.phtml';
 			require $root . 'view/foot.phtml';
 		} else {
-			if (isset($uri[2])) {
+			if (intval($uri[2])) {
 				header('Location: /team', true, 302);
 			} else {
 				header('Location: /logout', true, 302);

@@ -24,7 +24,8 @@ elseif ($uri[1] == 'team') {
 			$teamId = array_keys($_SESSION['teams'])[0];
 		}
 		$cache = $root . 'cache/matchlist/' . $teamId . '.xml';
-		$matches = new SimpleXMLElement(file_get_contents($cache));
+		libxml_use_internal_errors(true);
+		$matches = simplexml_load_string(file_get_contents($cache));
 		if (intval($matches->Expires) < time()) {
 			require $root . 'chpp/match.php';
 			$matches = getMatches($teamId);

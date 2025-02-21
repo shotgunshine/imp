@@ -5,7 +5,8 @@ IMP.prediction = (function() {
 
 	function _odds(prediction) {
 		let odds = [0, 0, 0];
-		prediction.forEach((x, h) => x.forEach((y, a) => odds[Math.sign(a - h) + 1] += y));
+		prediction.forEach((x, h) => x.forEach((p, a) => odds[Math.sign(a - h) + 1] += p));
+
 		return {
 			win: odds[0],
 			draw: odds[1],
@@ -41,11 +42,12 @@ IMP.prediction = (function() {
 		forumTable += '%[/td][td align=center][b]Scoring[/b][/td][td align=center]';
 		forumTable += Number(document.getElementById('scor2').getAttribute('data')).toFixed(1);
 		forumTable += '%[/td][/tr][/table]';
+
 		return forumTable;
 	}
 
 	function _gradientTable(prediction, rows, cols) {
-		let table = '<thead><tr><th id="doubleHeader" class="p-0">';
+		let table = '<thead><tr><th class="p-0 small">';
 		table += '<div class="text-end ms-3">Away</div>';
 		table += '<div class="text-start">Home</div></th>';
 		for (let away = 0; away < cols; away++) {
@@ -60,7 +62,7 @@ IMP.prediction = (function() {
 				let p = prediction[home][away];
 				let style = `background: rgba(144, 155, 166, ${(p/max)**0.5});`;
 				if (away == home && home < 8) style += ' border: 1px solid var(--bs-body-color);';
-				table += `<td style="${style}">${p ? (100 * p).toFixed(1) + '%' : '-'}</td>`;
+				table += `<td class="small align-middle" style="${style}">${p ? (100 * p).toFixed(1) + '%' : '-'}</td>`;
 			}
 			table += '</tr>';
 		}
@@ -69,6 +71,7 @@ IMP.prediction = (function() {
 		let tableNode = document.createElement('table');
 		tableNode.classList = 'table table-borderless text-center';
 		tableNode.innerHTML = table;
+
 		return tableNode;
 	}
 
@@ -109,7 +112,6 @@ IMP.prediction = (function() {
 			_printDelta(document.getElementById('pred1'), 100 * _odds(prediction).win, 1);
 			_printDelta(document.getElementById('predx'), 100 * _odds(prediction).draw, 1);
 			_printDelta(document.getElementById('pred2'), 100 * _odds(prediction).loss, 1);
-
 			let avgChancesHome = possession + countersHome * (1 - possession) * (1 - avgScoringAway);
 			let avgChancesAway = (1 - possession) + countersAway * possession * (1 - avgScoringHome);
 			_printDelta(document.getElementById('goal1'), 10 * avgChancesHome * (1 - pressing) * avgScoringHome, 2);

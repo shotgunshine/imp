@@ -44,7 +44,7 @@ IMP.form = (function() {
 				document.getElementById(team + '_tl').value = tacticLevel;
 			}
 		});
-		IMP.form.updateLiveProbabilities();
+		document.dispatchEvent(new Event('setRatings'));
 	}
 
 	function _saveRatings(team) {
@@ -71,23 +71,6 @@ IMP.form = (function() {
 		_setRatings(team, ratings);
 	}
 
-	function _getXmlRatings(xml) {
-		return new IMP.ratings(
-			xml.getElementsByTagName('RatingLeftDef')[0] / 4 + 0.75,
-			xml.getElementsByTagName('RatingMidDef')[0] / 4 + 0.75,
-			xml.getElementsByTagName('RatingRightDef')[0] / 4 + 0.75,
-			xml.getElementsByTagName('RatingMidfield')[0] / 4 + 0.75,
-			xml.getElementsByTagName('RatingLeftAtt')[0] / 4 + 0.75,
-			xml.getElementsByTagName('RatingMidAtt')[0] / 4 + 0.75,
-			xml.getElementsByTagName('RatingRightAtt')[0] / 4 + 0.75,
-			xml.getElementsByTagName('RatingIndirectSetPiecesDef')[0] / 4 + 0.75,
-			xml.getElementsByTagName('RatingIndirectSetPiecesAtt')[0] / 4 + 0.75,
-			0.25,
-			xml.getElementsByTagName('TacticType')[0],
-			xml.getElementsByTagName('TacticSkill')[0],
-		);
-	}
-
 	function _updateSector(sector, probability) {
 		let label = document.querySelector(`[for="${sector}"] > span`);
 		label.textContent = Math.round(100 * probability) + "%";
@@ -111,63 +94,30 @@ IMP.form = (function() {
 		getHomeRatings: function() {
 			return _getRatings(_formSide.home);
 		},
-
 		getAwayRatings: function() {
 			return _getRatings(_formSide.away);
 		},
-
 		saveHomeRatings: function() {
-			return _saveRatings(_formSide.home);
+			_saveRatings(_formSide.home);
 		},
-
 		saveAwayRatings: function() {
-			return _saveRatings(_formSide.away);
+			_saveRatings(_formSide.away);
 		},
-
 		loadHomeRatings: function(file) {
-			return _loadRatings(file, _formSide.home);
+			_loadRatings(file, _formSide.home);
 		},
-
 		loadAwayRatings: function(file) {
-			return _loadRatings(file, _formSide.away);
+			_loadRatings(file, _formSide.away);
 		},
-
 		flipHomeRatings: function() {
-			return _flipRatings(_formSide.home);
+			_flipRatings(_formSide.home);
 		},
-
 		flipAwayRatings: function() {
-			return _flipRatings(_formSide.away);
+			_flipRatings(_formSide.away);
 		},
-
 		updateLiveProbabilities: function(home, away) {
 			_updateLiveProbabilities(_formSide.home, _formSide.away);
 			_updateLiveProbabilities(_formSide.away, _formSide.home);
-		},
-
-		importMatchRatings: function(pushState = true) {
-			let matchForm = document.getElementById('match_id');
-			let matchId = Number(matchForm.value);
-			let path = '/match?id=' + matchId;
-			let request = new XMLHttpRequest();
-			request.open('GET', path, true);
-			request.onload = () => {
-				if (request.status == 200) {
-					matchForm.classList.remove('is-invalid');
-					let xml = request.responseXML;
-					_setRatings(_formSide.home, _getXmlRatings(xml.getElementsByTagName('HomeTeam')[0]));
-					_setRatings(_formSide.away, _getXmlRatings(xml.getElementsByTagName('AwayTeam')[0]));
-					IMP.form.updateLiveProbabilities();
-					IMP.form.printPrediction();
-					let homeName = xml.getElementsByTagName('HomeTeamName')[0].slice(0, 8).trim();
-					let awayName = xml.getElementsByTagName('AwayTeamName')[0].slice(0, 8).trim();
-					document.title = `${homeName} - ${awayName} · IMP`;
-					if (pushState) history.pushState({}, null, `/m/${matchId}`);
-				} else {
-					matchForm.classList.add('is-invalid');
-				}
-			}
-			request.send();
 		}
 	};
 })();

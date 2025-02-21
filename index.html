@@ -8,70 +8,63 @@
 	<script src="imp/binomial.js" type="text/javascript"></script>
 	<script src="imp/predictor.js" type="text/javascript"></script>
 	<script src="imp/ratings.js" type="text/javascript"></script>
-	<script src="imp/ui/form.js" type="text/javascript"></script>
-	<script src="imp/ui/prediction.js" type="text/javascript"></script>
+	<script src="imp/form.js" type="text/javascript"></script>
+	<script src="imp/prediction.js" type="text/javascript"></script>
 	<link href="res/bootstrap.min.css" rel="stylesheet">
 	<link href="res/style.css" rel="stylesheet">
-	<link href="res/img/favicon.svg" rel="icon" type="image/svg+xml">
+	<link href="res/favicon.svg" rel="icon" type="image/svg+xml">
 </head>
 <body class="d-flex flex-column min-vh-100">
-<header class="navbar navbar-light border-bottom">
-	<nav class="container">
-		<a href="#" class="navbar-brand">
-			<img class="align-top" src="res/img/favicon.svg" height="32">
-			<img class="align-top" src="res/img/logo.svg" height="32">
-		</a>
-	</nav>
-</header>
-<main class="container my-3">
+<main class="container my-3" style="max-width: 876px;">
+	<h1>IMP: Match Predictor</h1>
 	<div class="row">
 		<div class="col-12 col-md-6">
 			<h3>Home team</h3>
 			<div class="row justify-content-center align-items-end">
-				<div class="col-4">
-					<label for="home_rd"><span class="fw-bolder">-</span> Right defense</label>
+				<div class="col-4 overflow-hidden">
+					<label class="small align-middle text-nowrap" for="home_rd"><span class="fw-bolder">-</span> Right defense</label>
 					<input type="number" value="10.00" step="0.25" class="form-control text-center" id="home_rd">
 				</div>
-				<div class="col-4">
-					<label for="home_cd"><span class="fw-bolder">-</span> Central defense</label>
+				<div class="col-4 overflow-hidden">
+					<label class="small align-middle text-nowrap" for="home_cd"><span class="fw-bolder">-</span> Central defense</label>
 					<input type="number" value="10.00" step="0.25" class="form-control text-center" id="home_cd">
 				</div>
-				<div class="col-4">
-					<label for="home_ld"><span class="fw-bolder">-</span> Left defense</label>
+				<div class="col-4 overflow-hidden">
+					<label class="small align-middle text-nowrap" for="home_ld"><span class="fw-bolder">-</span> Left defense</label>
 					<input type="number" value="10.00" step="0.25" class="form-control text-center" id="home_ld">
 				</div>
 			</div>
 			<div class="row justify-content-center align-items-end">
-				<div class="col-4">
-					<label for="home_mf"><span class="fw-bolder">-</span> Midfield</label>
+				<div class="col-4 overflow-hidden">
+					<label class="small align-middle text-nowrap" for="home_mf"><span class="fw-bolder">-</span> Midfield</label>
 					<input type="number" value="10.00" step="0.25" class="form-control text-center" id="home_mf">
 				</div>
 			</div>
 			<div class="row justify-content-center align-items-end">
-				<div class="col-4">
-					<label for="home_ra"><span class="fw-bolder">-</span> Right attack</label>
+				<div class="col-4 overflow-hidden">
+					<label class="small align-middle text-nowrap" for="home_ra"><span class="fw-bolder">-</span> Right attack</label>
 					<input type="number" value="10.00" step="0.25" class="form-control text-center" id="home_ra">
 				</div>
-				<div class="col-4">
-					<label for="home_ca"><span class="fw-bolder">-</span> Central attack</label>
+				<div class="col-4 overflow-hidden">
+					<label class="small align-middle text-nowrap" for="home_ca"><span class="fw-bolder">-</span> Central attack</label>
 					<input type="number" value="10.00" step="0.25" class="form-control text-center" id="home_ca">
 				</div>
-				<div class="col-4">
-					<label for="home_la"><span class="fw-bolder">-</span> Left attack</label>
+				<div class="col-4 overflow-hidden">
+					<label class="small align-middle text-nowrap" for="home_la"><span class="fw-bolder">-</span> Left attack</label>
 					<input type="number" value="10.00" step="0.25" class="form-control text-center" id="home_la">
 				</div>
 			</div>
 			<div class="row justify-content-center align-items-end">
-				<div class="col-4">
-					<label for="home_sd"><span class="fw-bolder">-</span> Ind. SP defense</label>
+				<div class="col-4 overflow-hidden">
+					<label class="small align-middle text-nowrap" for="home_sd"><span class="fw-bolder">-</span> Ind. SP defense</label>
 					<input type="number" value="10.00" step="0.25" class="form-control text-center" id="home_sd">
 				</div>
-				<div class="col-4">
-					<label for="home_sa"><span class="fw-bolder">-</span> Ind. SP attack</label>
+				<div class="col-4 overflow-hidden">
+					<label class="small align-middle text-nowrap" for="home_sa"><span class="fw-bolder">-</span> Ind. SP attack</label>
 					<input type="number" value="10.00" step="0.25" class="form-control text-center" id="home_sa">
 				</div>
-				<div class="col-4">
-					<label for="home_sp">Direct SP</label>
+				<div class="col-4 overflow-hidden">
+					<label class="small align-middle text-nowrap" for="home_sp">Direct SP</label>
 					<div class="input-group">
 						<input type="number" value="25" class="form-control text-center" id="home_sp">
 						<span class="input-group-text">%</span>
@@ -80,7 +73,7 @@
 			</div>
 			<div class="row justify-content-center align-items-end">
 				<div class="col-8">
-					<label for="home_tc">Tactic</label>
+					<label class="small align-middle text-nowrap" for="home_tc">Tactic</label>
 					<select class="form-select" id="home_tc">
 						<option value="0">Normal</option>
 						<option value="1">Pressing</option>
@@ -90,65 +83,65 @@
 						<option value="8">Long shots</option>
 					</select>
 				</div>
-				<div class="col-4">
-					<label for="home_tl">Tactic level</label>
+				<div class="col-4 overflow-hidden">
+					<label class="small align-middle text-nowrap" for="home_tl">Tactic level</label>
 					<input type="number" value="10" class="form-control text-center" id="home_tl">
 				</div>
 			</div>
 			<div class="my-3 d-flex">
-				<button type="button" class="btn btn-outline" onclick="IMP.form.saveHomeRatings()">Save</button>
-				<label for="load_home" class="btn btn-outline ms-2 my-0">Load</label>
+				<button type="button" class="btn btn-custom" onclick="IMP.form.saveHomeRatings()">Save</button>
+				<label for="load_home" class="btn btn-custom ms-2 my-0">Load</label>
 				<input type="file" accept=".imp" class="d-none" id="load_home" onchange="IMP.form.loadHomeRatings(this)">
-				<button type="button" class="btn btn-outline ms-2" onclick="IMP.form.flipHomeRatings()">Flip</button>
+				<button type="button" class="btn btn-custom ms-2" onclick="IMP.form.flipHomeRatings()">Flip</button>
 			</div>
 		</div>
 		<div class="col-12 col-md-6">
 			<h3>Away team</h3>
 			<div class="row justify-content-center align-items-end">
-				<div class="col-4">
-					<label for="away_rd"><span class="fw-bolder">-</span> Right defense</label>
+				<div class="col-4 overflow-hidden">
+					<label class="small align-middle text-nowrap" for="away_rd"><span class="fw-bolder">-</span> Right defense</label>
 					<input type="number" value="10.00" step="0.25" class="form-control text-center" id="away_rd">
 				</div>
-				<div class="col-4">
-					<label for="away_cd"><span class="fw-bolder">-</span> Central defense</label>
+				<div class="col-4 overflow-hidden">
+					<label class="small align-middle text-nowrap" for="away_cd"><span class="fw-bolder">-</span> Central defense</label>
 					<input type="number" value="10.00" step="0.25" class="form-control text-center" id="away_cd">
 				</div>
-				<div class="col-4">
-					<label for="away_ld"><span class="fw-bolder">-</span> Left defense</label>
+				<div class="col-4 overflow-hidden">
+					<label class="small align-middle text-nowrap" for="away_ld"><span class="fw-bolder">-</span> Left defense</label>
 					<input type="number" value="10.00" step="0.25" class="form-control text-center" id="away_ld">
 				</div>
 			</div>
 			<div class="row justify-content-center align-items-end">
-				<div class="col-4">
-					<label for="away_mf"><span class="fw-bolder">-</span> Midfield</label>
+				<div class="col-4 overflow-hidden">
+					<label class="small align-middle text-nowrap" for="away_mf"><span class="fw-bolder">-</span> Midfield</label>
 					<input type="number" value="10.00" step="0.25" class="form-control text-center" id="away_mf">
 				</div>
 			</div>
 			<div class="row justify-content-center align-items-end">
-				<div class="col-4">
-					<label for="away_ra"><span class="fw-bolder">-</span> Right attack</label>
+				<div class="col-4 overflow-hidden">
+					<label class="small align-middle text-nowrap" for="away_ra"><span class="fw-bolder">-</span> Right attack</label>
 					<input type="number" value="10.00" step="0.25" class="form-control text-center" id="away_ra">
 				</div>
-				<div class="col-4">
-					<label for="away_ca"><span class="fw-bolder">-</span> Central attack</label>
+				<div class="col-4 overflow-hidden">
+					<label class="small align-middle text-nowrap" for="away_ca"><span class="fw-bolder">-</span> Central attack</label>
 					<input type="number" value="10.00" step="0.25" class="form-control text-center" id="away_ca">
 				</div>
-				<div class="col-4">
-					<label for="away_la"><span class="fw-bolder">-</span> Left attack</label>
+				<div class="col-4 overflow-hidden">
+					<label class="small align-middle text-nowrap" for="away_la"><span class="fw-bolder">-</span> Left attack</label>
 					<input type="number" value="10.00" step="0.25" class="form-control text-center" id="away_la">
 				</div>
 			</div>
 			<div class="row justify-content-center align-items-end">
-				<div class="col-4">
-					<label for="away_sd"><span class="fw-bolder">-</span> Ind. SP defense</label>
+				<div class="col-4 overflow-hidden">
+					<label class="small align-middle text-nowrap" for="away_sd"><span class="fw-bolder">-</span> Ind. SP defense</label>
 					<input type="number" value="10.00" step="0.25" class="form-control text-center" id="away_sd">
 				</div>
-				<div class="col-4">
-					<label for="away_sa"><span class="fw-bolder">-</span> Ind. SP attack</label>
+				<div class="col-4 overflow-hidden">
+					<label class="small align-middle text-nowrap" for="away_sa"><span class="fw-bolder">-</span> Ind. SP attack</label>
 					<input type="number" value="10.00" step="0.25" class="form-control text-center" id="away_sa">
 				</div>
-				<div class="col-4">
-					<label for="away_sp">Direct SP</label>
+				<div class="col-4 overflow-hidden">
+					<label class="small align-middle text-nowrap" for="away_sp">Direct SP</label>
 					<div class="input-group">
 						<input type="number" value="25" class="form-control text-center" id="away_sp">
 						<span class="input-group-text">%</span>
@@ -157,7 +150,7 @@
 			</div>
 			<div class="row justify-content-center align-items-end">
 				<div class="col-8">
-					<label for="away_tc">Tactic</label>
+					<label class="small align-middle text-nowrap" for="away_tc">Tactic</label>
 					<select class="form-select" id="away_tc">
 						<option value="0">Normal</option>
 						<option value="1">Pressing</option>
@@ -167,16 +160,16 @@
 						<option value="8">Long shots</option>
 					</select>
 				</div>
-				<div class="col-4">
-					<label for="away_tl">Tactic level</label>
+				<div class="col-4 overflow-hidden">
+					<label class="small align-middle text-nowrap" for="away_tl">Tactic level</label>
 					<input type="number" value="10" class="form-control text-center" id="away_tl">
 				</div>
 			</div>
 			<div class="my-3 d-flex justify-content-end">
-				<button type="button" class="btn btn-outline" onclick="IMP.form.saveAwayRatings()">Save</button>
-				<label for="load_away" class="btn btn-outline ms-2 my-0">Load</label>
+				<button type="button" class="btn btn-custom" onclick="IMP.form.saveAwayRatings()">Save</button>
+				<label for="load_away" class="btn btn-custom ms-2 my-0">Load</label>
 				<input type="file" accept=".imp" class="d-none" id="load_away" onchange="IMP.form.loadAwayRatings(this)">
-				<button type="button" class="btn btn-outline ms-2" onclick="IMP.form.flipAwayRatings()">Flip</button>
+				<button type="button" class="btn btn-custom ms-2" onclick="IMP.form.flipAwayRatings()">Flip</button>
 			</div>
 		</div>
 	</div>
@@ -187,11 +180,10 @@
 		>Predict</button>
 	<h3>Prediction</h3>
 	<button
-		id="copyForumBtn"
-		class="btn btn-inverted position-absolute p-1 my-1"
+		class="btn btn-sm btn-custom position-absolute"
 		onclick="IMP.prediction.copyForumTable(this)"
 		title="Copy forum table"
-		><img src="res/img/copy.svg" width=16></button>
+		>📋</button>
 	<table class="table text-center">
 		<thead>
 			<tr><th width="33%">Home</th><th width="33%">Draw</th><th width="33%">Away</th></tr>
@@ -207,23 +199,18 @@
 	<p>Sim doesn't understand if the tactic skill is enough compared to the mainskill average of the players. So be careful when it suggests that CA is a good tactic, with tactic skill of 10 and combined hatstats in the game are something like 800.</p>
 	<p>Dynamic pullback is ignored.</p>
 	<p>Special events are coming soon.</p>
-	<script type="text/javascript">
-		document.onload = IMP.form.updateLiveProbabilities();
-		document.querySelectorAll('[step="0.25"]').forEach(input => {
-			input.addEventListener('change', IMP.form.updateLiveProbabilities);
-			input.addEventListener('change', function(event) {
-				this.value = Number(this.value).toFixed(2);
-			});
-		});
-	</script>
+	<p><a href="https://github.com/shotgunshine/imp">GitHub</a></p>
 </main>
-<footer class="mt-auto">
-	<ul class="nav justify-content-center border-top py-2 text-center">
-		<li class="nav-item">
-			<a href="https://github.com/shotgunshine/imp" class="nav-link text-muted">GitHub</a>
-		</li>
-	</ul>
-</footer>
+<script type="text/javascript">
+	document.onload = IMP.form.updateLiveProbabilities();
+	document.addEventListener('setRatings', IMP.form.updateLiveProbabilities);
+	document.querySelectorAll('[step="0.25"]').forEach(input => {
+		input.addEventListener('change', IMP.form.updateLiveProbabilities);
+		input.addEventListener('change', function(event) {
+			this.value = Number(this.value).toFixed(2);
+		});
+	});
+</script>
 <script type="text/javascript">
 	function switchTheme(theme) {
 		document.querySelector('html').setAttribute('data-bs-theme', theme);

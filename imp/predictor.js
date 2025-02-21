@@ -49,9 +49,10 @@ IMP.predictor = (function() {
 		avgScoringChance: function(home, away) {
 			let wingsChance = _scoringChance(home.rightAttack, away.leftDefense);
 			wingsChance += _scoringChance(home.leftAttack, away.rightDefense);
+			wingsChance /= 2;
 			let wingsWeight = 0.52 * (1 - _tacticEfficacy(AIM, home.tactics[AIM]));
 			wingsWeight += 0.36 * _tacticEfficacy(AOW, home.tactics[AOW]);
-			wingsChance *= wingsWeight / 2;
+			wingsChance *= wingsWeight;
 			let middleChance = _scoringChance(home.centralAttack, away.centralDefense);
 			let middleWeight = 0.36 * (1 - _tacticEfficacy(AOW, home.tactics[AOW]));
 			middleWeight += 0.52 * _tacticEfficacy(AIM, home.tactics[AIM]);

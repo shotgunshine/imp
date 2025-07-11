@@ -9,6 +9,7 @@ IMP.predictor = (function() {
 	const AOW = 4;
 	const LS = 8;
 	const LS_SCORING = 800;
+	const PRESS_LS = 100;
 
 	function _chanceDistribution(midfieldHome, midfieldAway) {
 		if (midfieldHome < midfieldAway) {
@@ -29,13 +30,15 @@ IMP.predictor = (function() {
 		} else if (tacticId == CA) {
 			return 0.43 * Math.tanh(tacticLevel**1.8 / 130);
 		} else if (tacticId == AIM) {
-			return 0.27 * Math.tanh(tacticLevel**2 / 166);
+			return 0.42 * Math.tanh(tacticLevel / 14);
 		} else if (tacticId == AOW) {
-			return 0.38 * Math.tanh(tacticLevel**2 / 125);
+			return 0.57 * Math.tanh(tacticLevel / 14);
 		} else if (tacticId == LS) {
 			return 0.39 * Math.tanh(tacticLevel**1.4 / 50);
 		} else if (tacticId == LS_SCORING) {
 			return 0.65 * Math.tanh(tacticLevel**2.8 / 3200);
+		} else if (tacticId == PRESS_LS) {
+			return 0.60 * Math.tanh(tacticLevel**0.75 / 3.6);
 		} else {
 			return 0;
 		}
@@ -59,6 +62,7 @@ IMP.predictor = (function() {
 			middleChance *= middleWeight;
 			let lsConversion = _tacticEfficacy(LS, home.tactics[LS]);
 			let lsScoring = _tacticEfficacy(LS_SCORING, home.tactics[LS]);
+			lsScoring *= 1 - _tacticEfficacy(PRESS_LS, away.tactics[PRESSING]);
 			let meanChance = (wingsChance + middleChance)*(1 - lsConversion) + lsConversion * lsScoring;
 			meanChance += 0.08 * home.dspProb;
 			meanChance += 0.04 * _scoringChance(home.ispAttack, away.ispDefense);
